@@ -1,25 +1,19 @@
-@media (max-width : 1340px) and (min-width : 850px) {
-.buttons label {display:inline-block;
-	font: 14px/25px "Arial Black", Gadget, sans-serif;
-}
-}
-
-@media (max-width : 1100px) and (min-width : 850px){
-	.title {font-size: 11px;
-	}
+@media (max-width : 1400px) and (min-width : 1000px) {
+	#scoreCards{width:99%}
+	#matchList {width:30%}
 }
 
-@media (max-width : 850px) {
-	.player {width: 95%;
+@media (max-width : 1000px) and (min-width : 70px) {
+	#scoreCards{width:100%}
+	.player{width:100%;
+		margin:5px 0px;}
+	#matchData .textfieldGroup {
+		width: 30%;
 	}
-}
-
-@media (max-width : 550px) and (min-width : 0px) {
-	.buttons label {display:inline-block;
-		font: 15px/25px "Arial Black", Gadget, sans-serif;
+	#matchData label {
+		font-size: 12px;
 	}
-
-@media (max-width : 420px) and (min-width : 000px){
-	.column {width:90%;
-	}
+#matchData {width: 64%;}
+#navBar .button{padding: 10px}
+#matchList {width:50%}
 }
