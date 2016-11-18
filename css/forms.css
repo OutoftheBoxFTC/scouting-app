@@ -98,3 +98,79 @@ padding: 0 0 0 20px;
   background-size: contain;
   padding-left:20px;
   height:14px;}
+/*========================================================
+    Score Card input
+========================================================*/
+.buttons input {display:none;}
+.buttons label {float:left;}
+.buttons label:hover{cursor:pointer;}
+
+.column {width:48%;}
+
+.outer {width:100%;
+	height:55px;
+	margin:3% 1%;
+}
+
+.pic {width: 16%;
+	height: 100%;
+	background:white;
+	margin:0% 2%;
+}
+
+.inner {height:100%;
+	width:80%;
+}
+
+.header {height: 25px;
+	width: 100%;
+	background: green;
+}
+.title, .subtitle {color: white;
+	text-transform: uppercase;
+}
+
+.title {font: 13px arial, sans-serif;
+		padding: 5px; 2%;
+}
+
+.subtitle{font: 10px arial, sans-serif;
+	background: #333;
+	padding: 2px 2%;
+}
+.buttons label {display:inline-block;
+	font: 20px/25px "Arial Black", Gadget, sans-serif;
+	text-align:center;
+	padding:5px 2%;
+	text-transform:uppercase;
+}
+
+.buttons input:checked + label {background-color: #03A9F4;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	color:white;
+
+}
+
+/* Basic parameters above this line, overrides below */
+.outer.wh{height: 60px;}
+.outer.wh .inner .header{height: 35px;}
+.outer.wh .inner .header .title{padding: 4px 2% 1px 2%;}
+.outer.wh .inner .buttons label{font: 20px/19px "Arial Black", Gadget, sans-serif;}
+.subtitle:empty{display:none;}
+
+.outer.Analysis{margin:1%;}
+
+.a {background-color: #111;}
+.b {background-color: #222;}
+.c {background-color: #333;}
+.d {background-color: #444;}
+
+.full {width: 100%;}
+.half {width: 50%;}
+.third {width:33.33%;}
+.quarter {width:25%}
+.fifth {width: 20%}
+.sixth {width:12.66%;overflow:hidden;}
+
+#demo {word-wrap: break-word; margin:1%; padding: 2%; background-color: #cccccc;}

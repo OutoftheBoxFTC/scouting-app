@@ -32,7 +32,7 @@ function formArray(formID, array) { //in the future, set to return array
       array.push(value);
     }
     else {
-      alert( 'No value detected for' + ' '+ ele.elements[i].id + '.');
+      alert('Missing Value');
       error=true;
       console.log(error);
       return;

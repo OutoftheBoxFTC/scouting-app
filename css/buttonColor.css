@@ -6,10 +6,10 @@
 .autonomous .inner .buttons input:checked + label, .driverControl .inner .buttons input:checked + label, .endGame .inner .buttons input:checked + label, .analysis .inner .buttons input:checked + label {background-color: #FFC107; -webkit-box-shadow: none; box-shadow: none; color:white;}
 
 /*Colors for Driver Control */
-.driverControl .inner .buttons .a {background-color: #E8F5E9;}
-.driverControl .inner .buttons .b {background-color: #A5D6A7;}
-.driverControl .inner .buttons .c {background-color: #81C784;}
-.driverControl .inner .buttons .d {background-color: #66BB6A;}
+.driverControl .inner .buttons .a {background-color: #CFD8DC;}
+.driverControl .inner .buttons .b {background-color: #B0BEC5;}
+.driverControl .inner .buttons .c {background-color: #90A4AE;}
+.driverControl .inner .buttons .d {background-color: #78909C;}
 
 /*Colors for End Game */
 .endGame .inner .buttons .a {background-color: #FFCDD2;}
@@ -27,6 +27,6 @@
 
 /*Header Colors */
 .autonomous .inner .header {background-color: #3F51B5 ;}
-.driverControl .inner .header{background-color: #1B5E20 ;}
+.driverControl .inner .header{background-color: #607D8B ;}
 .endGame .inner .header{background-color: #D50000 ;}
 .analysis .inner .header{background-color: #673AB7 ;}
