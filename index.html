@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Scouting App [Alpha 0.01]</title>
+    <link rel="shortcut icon" href="images/icons/logo.ico" type="image/x-icon" />
+    <meta name="description" content="An offline scouting app">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/mediaqueries.css">
+
+    <script src="js/jquery.js"></script>
+    <script src="js/scriptLibrary.js"></script>
+    <script src="js/script.js"></script>
+</head>
+
+<body>
+    <div class="fixed" id="topBar">
+        <div class="right margin-0-1 vcenter" id="visibilityToggleContainer">
+            <input type="checkbox" onclick="toggleShow('player1')" id="toggleBlue1" class="" checked/>
+            <label for="toggleBlue1">Blue 1</label>
+
+            <input type="checkbox" onclick="toggleShow('player2')" id="toggleBlue2" class="" checked/>
+            <label for="toggleBlue2"> Blue 2</label>
+
+            <input type="checkbox" onclick="toggleShow('player3')" id="toggleRed1" class="" checked/>
+            <label for="toggleRed1">Red 1</label>
+
+            <input type="checkbox" onclick="toggleShow('player4')" id="toggleRed2" class="" checked/>
+            <label for="toggleRed2">Red 2</label>
+
+        </div>
+    </div>
+    <div class="dropshadow fixed" id="navBar">
+
+        <div class="vcenter left" id="navContent">
+            <img src="images/logo.png" class="fullHeight contain left" id="teamLogo" />
+            <div class="left margin-0-1 vcenter material light" id="matchData">
+                <div class="textfieldGroup left">
+                    <input type="text" placeholder="" name="matchNumber" required onblur="helloWorld('matchNumber')" />
+                    <label for="matchNumber">Match #</label>
+                    <span class="bar"></span>
+                </div>
+                <div class="textfieldGroup left">
+                    <input type="number" class="score blueAlliance" placeholder="" name="blueScore" required/>
+                    <label for="blueScore">Blue Alliance Score</label>
+                    <span class="bar"></span>
+                </div>
+                <div class="textfieldGroup left">
+                    <input type="number" class="score redAlliance" placeholder="" name="redScore" required/>
+                    <label for="redScore">Red Alliance Score</label>
+                    <span class="bar"></span>
+                </div>
+            </div>
+            <div class="right margin-0-1" id="controlButtons">
+                <button class="button accent " onclick="">Save Match</button>
+                <button class="button blue " onclick="">Export Scores</button>
+                <!-- <button class="button none" onclick="">Import Scores</button> -->
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="dropshadow" id="contentContainer">
+        <div class="left" id="matchList">
+            <div class="textfieldGroup material full">
+                <input type="number" class="dark" placeholder="" name="matchSearch" id="matchSearch" required/>
+                <label class="dark search" for="matchSearch">Search Match List</label>
+                <span class="bar"></span>
+            </div>
+            <table id="matches">
+                <tr>
+                    <th>
+                        Match
+                    </th>
+                    <th>
+                        Blue 1
+                    </th>
+                    <th>
+                        Blue 2
+                    </th>
+                    <th>
+                        Red 1
+                    </th>
+                    <th>
+                        Red 2
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        1
+                    </td>
+                    <td>
+                        111111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        2
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        111111
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        3
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        111111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        4
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        111111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        5
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        111111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                    <td>
+                        1111
+                    </td>
+                </tr>
+            </table>
+            <div class="left" id="addMatches">
+                <form id="matchInputForm">
+
+                    <div class="textfieldGroup material fifth left">
+                        <input type="number" class="dark" placeholder="" name="matchNumber" required/>
+                        <label class="dark" for="matchNumber">Match</label>
+                        <span class="bar"></span>
+                    </div>
+                    <div class="textfieldGroup material fifth left">
+                        <input type="number" class="dark" placeholder="" name="addBlue1" required/>
+                        <label class="dark" for="addBlue1">Blue 1</label>
+                        <span class="bar"></span>
+                    </div>
+                    <div class="textfieldGroup material fifth left">
+                        <input type="number" class="dark" placeholder="" name="addBlue2" required/>
+                        <label class="dark" for="addBlue2">Blue 2</label>
+                        <span class="bar"></span>
+                    </div>
+                    <div class="textfieldGroup material fifth left">
+                        <input type="number" class="dark" placeholder="" name="addRed1" required/>
+                        <label class="dark" for="addRed1">Red 1</label>
+                        <span class="bar"></span>
+                    </div>
+                    <div class="textfieldGroup material fifth left">
+                        <input type="number" class="dark" placeholder="" name="addRed2" required/>
+                        <label class="dark" for="addRed2">Red 2</label>
+                        <span class="bar"></span>
+                    </div>
+                </form>
+                <button class="accent button full" onclick="">Enter</button>
+            </div>
+        </div>
+        <div class="player" id="player1"></div>
+        <div class="player" id="player2"></div>
+        <div class="player" id="player3"></div>
+        <div class="player" id="player4"></div>
+        <div class="clear"></div>
+    </div>
+    <!-- Other People's scripts that I don't know how to make work in their own document -->
+    <script>
+        var $rows = $('#matches tr');
+        $('#matchSearch').keyup(function() {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+            $rows.show().filter(function() {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(val);
+            }).hide();
+        });
+    </script>
+</body>
+
+</html>
