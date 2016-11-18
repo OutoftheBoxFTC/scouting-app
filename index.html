@@ -19,16 +19,16 @@
 <body onload="makeList('teams')">
     <div class="fixed" id="topBar">
         <div class="right margin-0-1 vcenter" id="visibilityToggleContainer">
-            <input type="checkbox" onclick="toggleShow('player1')" id="toggleBlue1" class="" checked/>
+            <input type="checkbox" onclick="toggleShow('player1')" id="toggleBlue1" class="check" checked/>
             <label for="toggleBlue1">Blue 1</label>
 
-            <input type="checkbox" onclick="toggleShow('player2')" id="toggleBlue2" class="" checked/>
+            <input type="checkbox" onclick="toggleShow('player2')" id="toggleBlue2" class="check" checked/>
             <label for="toggleBlue2"> Blue 2</label>
 
-            <input type="checkbox" onclick="toggleShow('player3')" id="toggleRed1" class="" checked/>
+            <input type="checkbox" onclick="toggleShow('player3')" id="toggleRed1" class="check" checked/>
             <label for="toggleRed1">Red 1</label>
 
-            <input type="checkbox" onclick="toggleShow('player4')" id="toggleRed2" class="" checked/>
+            <input type="checkbox" onclick="toggleShow('player4')" id="toggleRed2" class="check" checked/>
             <label for="toggleRed2">Red 2</label>
 
         </div>
@@ -63,7 +63,7 @@
         <div class="clear"></div>
     </div>
     <div class="dropshadow" id="contentContainer">
-        
+
         <div id="scoreCards" class="right">
         <div class="player" id="player1"></div>
         <div class="player" id="player2"></div>
@@ -73,7 +73,7 @@
         </div>
         <div class="left" id="matchList">
             <div class="textfieldGroup material full">
-                <input type="number" class="dark" placeholder="" name="matchSearch" id="matchSearch" required/>
+                <input list="teams" type="number" class="dark" placeholder="" name="matchSearch" id="matchSearch" required/>
                 <label class="dark search" for="matchSearch">Search Match List</label>
                 <span class="bar"></span>
             </div>
@@ -95,7 +95,7 @@
                         Red 2
                     </th>
                 </tr>
-               
+
             </table>
             <div class="left" id="addMatches">
                 <form id="matchInputForm">
@@ -126,8 +126,60 @@
                         <span class="bar"></span>
                     </div>
                 </form>
-                <button class="accent button full" onclick="form2MatchList('matchInputForm')">Enter</button>
+                <button class="accent button full" onclick="addMatch('matchInputForm', 'matches', matchList)">Enter</button>
             </div>
+        </div>
+        <div class="right full" id="scoresList">
+          <h2>Match Results</h2>
+          <table class="" id="scores">
+            <tr>
+              <th>
+                Team Number
+              </th>
+              <th>
+                Match Number
+              </th>
+              <th>
+                Alliance
+              </th>
+              <th>
+                Blue Score
+              </th>
+              <th>
+                Red Score
+              </th>
+              <th>
+                Auto Beacon
+              </th>
+              <th>
+                Particles Center
+              </th>
+              <th>
+                Particles Corner
+              </th>
+              <th>
+                Cap Ball
+              </th>
+              <th>
+                Parking
+              </th>
+              <th>
+                Teli-Op Beacons
+              </th>
+              <th>
+                Particles Center
+              </th>
+              <th>
+                Particles Corner
+              </th>
+              <th>
+                Cap Ball
+              </th>
+              <th>
+                Scout Score
+              </th>
+            </tr>
+          </table>
         </div>
         <div class="clear"></div>
     </div>

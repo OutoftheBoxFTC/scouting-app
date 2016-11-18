@@ -1,6 +1,9 @@
 @media (max-width : 1400px) and (min-width : 1000px) {
 	#scoreCards{width:99%}
-	#matchList {width:30%}
+	#matchList {width:29%;}
+	#scoresList{ width: 69%;
+		overflow:auto;
+		margin: 1% 0% 0% 1%;}
 }
 
 @media (max-width : 1000px) and (min-width : 70px) {
@@ -15,5 +18,8 @@
 	}
 #matchData {width: 64%;}
 #navBar .button{padding: 10px}
-#matchList {width:50%}
+#matchList {width:30%}
+#scoresList{ width: 69%;
+	overflow:auto;
+	margin: 20px 0% 0px 1%;}
 }

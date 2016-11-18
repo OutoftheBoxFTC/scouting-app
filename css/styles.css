@@ -89,7 +89,9 @@ height: 100%;}
 #matchList {width:20%;
   display:table;
   position:relative;
-  top:0px;}
+  top:0px;
+	overflow: auto;}
+
 table {width: 95%;}
 th {font-size: 12px;
   font-weight: lighter;
@@ -108,6 +110,7 @@ tr:hover {background: #E0E0E0;}
 /* Table Button Styles */
 #addMatches{
   margin:15px 0px;
+	height:auto;
 }
 #addMatches label {
   font-size: 10px;
