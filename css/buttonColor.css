@@ -3,7 +3,7 @@
 .autonomous .inner .buttons .b {background-color: #90CAF9;}
 .autonomous .inner .buttons .c {background-color: #64B5F6;}
 .autonomous .inner .buttons .d {background-color: #42A5F5;}
-.autonomous .inner .buttons input:checked + label, .driverControl .inner .buttons input:checked + label, .endGame .inner .buttons input:checked + label, .analysis .inner .buttons input:checked + label {background-color: #FFC107; -webkit-box-shadow: none; box-shadow: none; color:white;}
+.autonomous .inner .buttons input:checked + label, .driverControl .inner .buttons input:checked + label, .endGame .inner .buttons input:checked + label, .analysis .inner .buttons input:checked + label {background-color: #C6FF00; -webkit-box-shadow: none; box-shadow: none; color:#212121;}
 
 /*Colors for Driver Control */
 .driverControl .inner .buttons .a {background-color: #CFD8DC;}
@@ -18,15 +18,15 @@
 .endGame .inner .buttons .d {background-color: #EF5350;}
 
 /*Colors for Scout Analysis */
-.analysis .inner .buttons .a {background-color:#D1C4E9; color: white;}
-.analysis .inner .buttons .b {background-color:#B39DDB; color: white;}
-.analysis .inner .buttons .c {background-color:#9575CD; color: white;}
-.analysis .inner .buttons .d {background-color:#7E57C2; color: white;}
-.analysis .inner .buttons .e {background-color:#673AB7; color: white;}
-.analysis .inner .buttons .f {background-color:#5E35B1; color: white;}
+.analysis .inner .buttons .a {background-color:#FB8C00; color: white;}
+.analysis .inner .buttons .b {background-color:#FFB300; color: white;}
+.analysis .inner .buttons .c {background-color:#FDD835; color: white;}
+.analysis .inner .buttons .d {background-color:#C0CA33; color: white;}
+.analysis .inner .buttons .e {background-color:#7CB342; color: white;}
+.analysis .inner .buttons .f {background-color:#43A047; color: white;}
 
 /*Header Colors */
 .autonomous .inner .header {background-color: #3F51B5 ;}
 .driverControl .inner .header{background-color: #607D8B ;}
 .endGame .inner .header{background-color: #D50000 ;}
-.analysis .inner .header{background-color: #673AB7 ;}
+.analysis .inner .header{background-color: #212121 ;}
