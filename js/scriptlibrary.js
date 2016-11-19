@@ -1,5 +1,7 @@
 var matchList = [];
+var playerList =['b1_','b2_','r1_', 'r2_']
 var teamList = [118, 2821, 4106, 4318, 5040, 5414, 5421, 6029, 6054, 6253, 6700, 6987, 8297, 8393, 8395, 8463, 8498, 8645, 9794, 9872, 10353, 10808, 11261, 11362];
+
 var error = false;
 function makeList(listId) {
     var list = document.getElementById(listId);
@@ -17,8 +19,8 @@ function toggleShow(id) {
     element.classList.toggle(cls);
 }
 
-function helloWorld(element) {
-  console.log(element + ' ' +'just lost focus!')
+function helloWorld(parameter) {
+  console.log(parameter + ' ' +'just lost focus!')
 }
 
 // Takes a form and array as input and pushes the form values to the array. Doesn't work with lists
@@ -78,5 +80,41 @@ function addMatch(formID, tableID, resetID, array) {
   ele.elements[0].focus();
   ele.elements[0].value = matchCount;
   matchList.push(newArray);
+  console.log(newArray);
+}
 
+//takes match number and pulls up match in matchList
+function getTeam(fieldID, matchArray, playerArray){
+  if(matchArray.length <1){
+    console.log('No matches logged');
+    return
+  }
+  var value = document.getElementById(fieldID).value;
+  if (value > matchArray.length){
+    console.log('Match Number out of range.');
+    return;
+  }
+  /*var x= value - 1; 
+  var  array = matchArray[x];
+  var valueA;
+  if(value){
+     console.log('Match ' + value);
+  }
+    for(i = 0; i <playerList.length; i++){
+      value = array[i+1];
+      var teamID = playerArray[i]+'tnumber';
+      valueA= document.getElementById(teamID).value;
+      if(valueA){ //if the box already has something
+        if (confirm("Overwrite Current Matches?") == true) {
+        document.getElementById(teamID).value = value;
+    } else {
+      console.log('User cancelled action.')
+        return;
+    }
+      }
+    }
+  }
+  else{
+    console.log('No value entered')
+  }*/
 }
