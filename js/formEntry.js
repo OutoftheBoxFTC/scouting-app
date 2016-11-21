@@ -55,7 +55,11 @@ function getScores(id) {
     return scores;
 }
 function matchData() {
-  var teamNumber;
+  var teamNumber=document.getElementById(id).value;
+  var matchNumber=document.getElementById();
+  var alliance;
+  var blueScore;
+  var redScore;
 }
 function score() {
   var scores = []
