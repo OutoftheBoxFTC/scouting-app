@@ -25,4 +25,6 @@ $( ".check" ).click(function() {
 				$box.prop("checked", false);
 			}
 		});
+
+
 });

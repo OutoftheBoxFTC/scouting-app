@@ -14,7 +14,7 @@
     <script src="js/jquery.js"></script>
     <script src="js/scriptLibrary.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/test.js"></script>
+    <script src="js/formEntry.js"></script>
 </head>
 
 <body onload="makeList('teams')">
@@ -51,8 +51,8 @@
                 </div>
             </div>
             <div class="right margin-0-1" id="controlButtons">
-                <button class="button accent " onclick="">Save</button>
-                <button class="button red" onclick="">reset</button>
+                <button class="button accent " onclick="score()">Save</button>
+                <button class="button red" onclick="resetCheckboxes()">reset</button>
                 <button class="button blue " onclick="">Export</button>
             </div>
         </div>
@@ -67,7 +67,7 @@
                     <label for="b1_tnumber">Team Number</label>
                     <span class="bar"></span>
                 </div>
-                
+
                 </div>
                 <div class="column left">
                     <div class="outer autonomous">
@@ -246,7 +246,7 @@
                     <label for="b2_tnumber">Team Number</label>
                     <span class="bar"></span>
                 </div>
-                
+
                 </div>
                 <div class="column left">
                     <div class="outer autonomous">
@@ -425,7 +425,7 @@
                     <label for="r1_tnumber">Team Number</label>
                     <span class="bar"></span>
                 </div>
-                
+
                 </div>
                 <div class="column left">
                     <div class="outer autonomous">
@@ -604,7 +604,7 @@
                     <label for="r2_tnumber">Team Number</label>
                     <span class="bar"></span>
                 </div>
-                
+
                 </div>
                 <div class="column left">
                     <div class="outer autonomous">
@@ -776,7 +776,7 @@
                     </div>
                 </div>
             </form>
-            <div class="clear"></div>
+            <div class="clear noShow"></div>
         </div>
         <div class="left" id="matchList">
             <div class="textfieldGroup material full">
@@ -836,7 +836,7 @@
         </div>
         <div class="right full" id="scoresList">
             <h2>Match Results</h2>
-            <table class="" id="scores">
+            <table class="" id="scoreTable">
                 <tr>
                     <th>
                         Team Number
