@@ -157,6 +157,7 @@ function score(tableID) {
         } else {}
         i++;
     }
+    csvContent = arrayCSV(allScores)
     if(confirm("Would you like to reset everything?\n CAUTION: All match data will be deleted.")){
       var forms = document.getElementById("scoreCards").children;
       formReset("matchData");
@@ -167,5 +168,5 @@ function score(tableID) {
       resetCheckboxes();
       console.log("All fields cleared");
     }
-    console.log(allScores);
+    console.log(csvContent);
 }
