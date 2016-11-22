@@ -20,47 +20,47 @@
 <body onload="makeList('teams')">
     <div class="fixed" id="topBar">
         <div class="right margin-0-1 vcenter" id="visibilityToggleContainer">
-            <input type="checkbox" onclick="toggleShow('player1')" id="toggleBlue1" class="check" checked/>
+            <input type="checkbox" onclick="toggleShow('blue_1')" id="toggleBlue1" class="check" checked/>
             <label for="toggleBlue1">Blue 1</label>
-            <input type="checkbox" onclick="toggleShow('player2')" id="toggleBlue2" class="check" checked/>
+            <input type="checkbox" onclick="toggleShow('blue_2')" id="toggleBlue2" class="check" checked/>
             <label for="toggleBlue2"> Blue 2</label>
-            <input type="checkbox" onclick="toggleShow('player3')" id="toggleRed1" class="check" checked/>
+            <input type="checkbox" onclick="toggleShow('red_1')" id="toggleRed1" class="check" checked/>
             <label for="toggleRed1">Red 1</label>
-            <input type="checkbox" onclick="toggleShow('player4')" id="toggleRed2" class="check" checked/>
+            <input type="checkbox" onclick="toggleShow('red_2')" id="toggleRed2" class="check" checked/>
             <label for="toggleRed2">Red 2</label>
         </div>
     </div>
     <div class="dropshadow fixed" id="navBar">
         <div class="vcenter left" id="navContent">
             <img src="images/logo.png" class="fullHeight contain left" id="teamLogo" />
-            <div class="left margin-0-1 vcenter material light" id="matchData">
+            <form class="left margin-0-1 vcenter material light" id="matchData">
                 <div class="textfieldGroup left">
                     <input type="number" class="light" id="matchNumber" name="matchNumber" required onblur="getTeam('matchNumber', matchList, playerList)" />
                     <label for="matchNumber">Match #</label>
                     <span class="bar"></span>
                 </div>
                 <div class="textfieldGroup left">
-                    <input type="number" class="score blueAlliance" placeholder="" name="blueScore" required/>
+                    <input type="number" class="score blueAlliance light" placeholder="" id="blueScore" name="blueScore" required/>
                     <label for="blueScore">Blue Alliance Score</label>
                     <span class="bar"></span>
                 </div>
                 <div class="textfieldGroup left">
-                    <input type="number" class="score redAlliance" placeholder="" name="redScore" required/>
+                    <input type="number" class="score redAlliance light" placeholder="" id="redScore" name="redScore" required/>
                     <label for="redScore">Red Alliance Score</label>
                     <span class="bar"></span>
                 </div>
-            </div>
+            </form>
             <div class="right margin-0-1" id="controlButtons">
-                <button class="button accent " onclick="score()">Save</button>
-                <button class="button red" onclick="resetCheckboxes()">reset</button>
-                <button class="button blue " onclick="">Export</button>
+                <button class="button accent " onclick="score('scores')">submit</button>
+                <button class="button blue" onclick="formReset('matchData')">download</button>
+                <!--<button class="button none light " onclick="checkRequiredFields()">import</button> -->
             </div>
         </div>
         <div class="clear"></div>
     </div>
     <div class="dropshadow" id="contentContainer">
         <div id="scoreCards" class="right">
-            <form id="player1" class="player dropshadow">
+            <form id="blue_1" class="player dropshadow blueAlliance">
                 <div class="teamInfo material">
                     <div class="textfieldGroup  third">
                     <input type="text" class="dark" name="b1_tnumber" id="b1_tnumber" required/>
@@ -100,7 +100,7 @@
                                 <label for="b1_toggle_2_a" class="quarter a">1</label>
                                 <input type="checkbox" id="b1_toggle_2_b" name="b1_autParticlesCenter" value="30" />
                                 <label for="b1_toggle_2_b" class="quarter b">2</label>
-                                <input type="checkbox" id="b1_toggle_2b_default" name="b1_autoParticlesCorner" value="0" checked/>
+                                <input type="checkbox" id="b1_toggle_2b_default" name="b1_autParticlesCorner" value="0" checked/>
                                 <input type="checkbox" id="b1_toggle_2_c" name="b1_autParticlesCorner" value="5" />
                                 <label for="b1_toggle_2_c" class="quarter c">1</label>
                                 <input type="checkbox" id="b1_toggle_2_d" name="b1_autParticlesCorner" value="10" />
@@ -239,7 +239,7 @@
                     </div>
                 </div>
             </form>
-             <form id="player2" class="player dropshadow">
+             <form id="blue_2" class="player dropshadow blueAlliance">
                 <div class="teamInfo material">
                     <div class="textfieldGroup  third">
                     <input type="text" class="dark" name="b2_tnumber" id="b2_tnumber" required/>
@@ -279,7 +279,7 @@
                                 <label for="b2_toggle_2_a" class="quarter a">1</label>
                                 <input type="checkbox" id="b2_toggle_2_b" name="b2_autParticlesCenter" value="30" />
                                 <label for="b2_toggle_2_b" class="quarter b">2</label>
-                                <input type="checkbox" id="b2_toggle_2b_default" name="b2_autoParticlesCorner" value="0" checked/>
+                                <input type="checkbox" id="b2_toggle_2b_default" name="b2_autParticlesCorner" value="0" checked/>
                                 <input type="checkbox" id="b2_toggle_2_c" name="b2_autParticlesCorner" value="5" />
                                 <label for="b2_toggle_2_c" class="quarter c">1</label>
                                 <input type="checkbox" id="b2_toggle_2_d" name="b2_autParticlesCorner" value="10" />
@@ -418,7 +418,7 @@
                     </div>
                 </div>
             </form>
-            <form id="player3" class="player dropshadow">
+            <form id="red_1" class="player dropshadow redAlliance">
                 <div class="teamInfo material">
                     <div class="textfieldGroup  third">
                     <input type="text" class="dark" name="r1_tnumber" id="r1_tnumber" required/>
@@ -458,7 +458,7 @@
                                 <label for="r1_toggle_2_a" class="quarter a">1</label>
                                 <input type="checkbox" id="r1_toggle_2_b" name="r1_autParticlesCenter" value="30" />
                                 <label for="r1_toggle_2_b" class="quarter b">2</label>
-                                <input type="checkbox" id="r1_toggle_2b_default" name="r1_autoParticlesCorner" value="0" checked/>
+                                <input type="checkbox" id="r1_toggle_2b_default" name="r1_autParticlesCorner" value="0" checked/>
                                 <input type="checkbox" id="r1_toggle_2_c" name="r1_autParticlesCorner" value="5" />
                                 <label for="r1_toggle_2_c" class="quarter c">1</label>
                                 <input type="checkbox" id="r1_toggle_2_d" name="r1_autParticlesCorner" value="10" />
@@ -597,7 +597,7 @@
                     </div>
                 </div>
             </form>
-             <form id="player4" class="player dropshadow">
+             <form id="red_2" class="player dropshadow redAlliance">
                 <div class="teamInfo material">
                     <div class="textfieldGroup  third">
                     <input type="text" class="dark" name="r2_tnumber" id="r2_tnumber" required/>
@@ -637,7 +637,7 @@
                                 <label for="r2_toggle_2_a" class="quarter a">1</label>
                                 <input type="checkbox" id="r2_toggle_2_b" name="r2_autParticlesCenter" value="30" />
                                 <label for="r2_toggle_2_b" class="quarter b">2</label>
-                                <input type="checkbox" id="r2_toggle_2b_default" name="r2_autoParticlesCorner" value="0" checked/>
+                                <input type="checkbox" id="r2_toggle_2b_default" name="r2_autParticlesCorner" value="0" checked/>
                                 <input type="checkbox" id="r2_toggle_2_c" name="r2_autParticlesCorner" value="5" />
                                 <label for="r2_toggle_2_c" class="quarter c">1</label>
                                 <input type="checkbox" id="r2_toggle_2_d" name="r2_autParticlesCorner" value="10" />
@@ -836,7 +836,7 @@
         </div>
         <div class="right full" id="scoresList">
             <h2>Match Results</h2>
-            <table class="" id="scoreTable">
+            <table class="" id="scores">
                 <tr>
                     <th>
                         Team Number

@@ -2,7 +2,7 @@ var matchList = [];
 var allScores = [];
 var playerList =['b1_','b2_','r1_', 'r2_']
 var teamList = [118, 2821, 4106, 4318, 5040, 5414, 5421, 6029, 6054, 6253, 6700, 6987, 8297, 8393, 8395, 8463, 8498, 8645, 9794, 9872, 10353, 10808, 11261, 11362];
-
+var csv;
 var error = false;
 
 //takes the name of a data list and fills if from the teamList array above
@@ -51,6 +51,7 @@ function addNewRow(rowData, tableId) {
         cell = row.insertCell(i);
         cell.innerHTML = rowData[i];
     }
+    console.log("Row Added to" + " " + tableId);
 }
 
 //Clears all text values from a given form
@@ -110,10 +111,10 @@ function getTeam(fieldID, matchArray, playerArray){
     console.log('getTeam terminated')
     return;
   }
-   
+
   array = matchArray[x];
   console.log('Match' +' ' + value + ' ' + 'is:' + ' ' + array);
-  
+
     for(i = 0; i <playerArray.length; i++){
       value = array[i+1];
       teamID = playerArray[i]+'tnumber';
