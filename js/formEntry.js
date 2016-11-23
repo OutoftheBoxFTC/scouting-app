@@ -145,7 +145,7 @@ function score(tableID) {
     checkRequiredFields();
     if (error) {
         error = false;
-        console.log("Missing required fields, score were not recorded.");
+        console.log("Missing required fields, score was not recorded.");
         return
     }
     while (i < ele.length) {
