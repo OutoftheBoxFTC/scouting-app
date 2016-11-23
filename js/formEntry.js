@@ -114,11 +114,11 @@ function checkRequiredFields() { // gross lazy function to perform basic field v
                 }
             }
             error = false;
-            return ;
+            return;
         } else {
             console.log("You said no!");
             error = true;
-            return ;
+            return;
         }
     }
 }
@@ -143,10 +143,11 @@ function score(tableID) {
     var ele = $('#scoreCards').children();
     var i = 0;
     checkRequiredFields();
-    if(error){
-      error=false;
-      console.log("Missing required fields, score were not recorded.");
-      return}
+    if (error) {
+        error = false;
+        console.log("Missing required fields, score were not recorded.");
+        return
+    }
     while (i < ele.length) {
         var scoreArray = []
         if (!ele[i].classList.contains('noShow')) {
@@ -157,16 +158,13 @@ function score(tableID) {
         } else {}
         i++;
     }
-    csvContent = arrayCSV(allScores)
-    if(confirm("Would you like to reset everything?\n CAUTION: All match data will be deleted.")){
-      var forms = document.getElementById("scoreCards").children;
-      formReset("matchData");
-      for(i = 0; i < forms.length -1; i++){
+    csv = arrayCSV(allScores)
+    var forms = document.getElementById("scoreCards").children;
+    formReset("matchData");
+    for (i = 0; i < forms.length - 1; i++) {
         var name = forms[i].id;
         formReset(name);
-      }
-      resetCheckboxes();
-      console.log("All fields cleared");
     }
-    console.log(csvContent);
+    resetCheckboxes();
+    console.log("All fields cleared");
 }

@@ -140,3 +140,24 @@ function arrayCSV(data) {
     });
     return csvContent;
 }
+
+function currentTime() {
+    var date = new Date();
+    var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+    var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+    var time = hours + minutes;
+    return time;
+}
+
+function downloadCSV(csv) {
+    var time = currentTime();
+    var name = "Scores_" + time + ".csv";
+    var contentType = 'text/csv';
+    if (!csv) {
+        alert("No save data detected");
+        console.log(time + "_CSV file was blank");
+        return;
+    }
+    download(new Blob([csv]), name, contentType);
+    return;
+}
