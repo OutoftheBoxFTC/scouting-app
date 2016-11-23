@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Scouting App [Alpha 0.06]</title>
+    <title>Scouting App [Alpha 0.12]</title>
     <link rel="shortcut icon" href="images/icons/logo.ico" type="image/x-icon" />
     <meta name="description" content="An offline scouting app">
     <link rel="stylesheet" href="css/reset.css">
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/buttonColor.css">
     <link rel="stylesheet" href="css/mediaqueries.css">
     <script src="js/jquery.js"></script>
+    <script src="js/scripts.js"></script>
     <script src="js/download.js"></script>
     <script src="js/scriptLibrary.js"></script>
     <script src="js/script.js"></script>
@@ -36,7 +37,7 @@
             <img src="images/logo.png" class="fullHeight contain left" id="teamLogo" />
             <form class="left margin-0-1 vcenter material light" id="matchData">
                 <div class="textfieldGroup left">
-                    <input type="number" class="light" id="matchNumber" name="matchNumber" required onblur="getTeam('matchNumber', matchList, playerList)" />
+                    <input type="number" class="light" id="matchNumber" name="matchNumber" required onblur="fillInTeamNumbers('scoreCards','matchNumber', matchList)" />
                     <label for="matchNumber">Match #</label>
                     <span class="bar"></span>
                 </div>
@@ -64,10 +65,10 @@
             <form id="blue_1" class="player dropshadow blueAlliance">
                 <div class="teamInfo material">
                     <div class="textfieldGroup  third">
-                    <input type="text" class="dark" name="b1_tnumber" id="b1_tnumber" required/>
-                    <label for="b1_tnumber">Team Number</label>
-                    <span class="bar"></span>
-                </div>
+                        <input type="text" class="dark" name="b1_tnumber" id="b1_tnumber" required/>
+                        <label for="b1_tnumber">Team Number</label>
+                        <span class="bar"></span>
+                    </div>
 
                 </div>
                 <div class="column left">
@@ -240,13 +241,13 @@
                     </div>
                 </div>
             </form>
-             <form id="blue_2" class="player dropshadow blueAlliance">
+            <form id="blue_2" class="player dropshadow blueAlliance">
                 <div class="teamInfo material">
                     <div class="textfieldGroup  third">
-                    <input type="text" class="dark" name="b2_tnumber" id="b2_tnumber" required/>
-                    <label for="b2_tnumber">Team Number</label>
-                    <span class="bar"></span>
-                </div>
+                        <input type="text" class="dark" name="b2_tnumber" id="b2_tnumber" required/>
+                        <label for="b2_tnumber">Team Number</label>
+                        <span class="bar"></span>
+                    </div>
 
                 </div>
                 <div class="column left">
@@ -422,10 +423,10 @@
             <form id="red_1" class="player dropshadow redAlliance">
                 <div class="teamInfo material">
                     <div class="textfieldGroup  third">
-                    <input type="text" class="dark" name="r1_tnumber" id="r1_tnumber" required/>
-                    <label for="r1_tnumber">Team Number</label>
-                    <span class="bar"></span>
-                </div>
+                        <input type="text" class="dark" name="r1_tnumber" id="r1_tnumber" required/>
+                        <label for="r1_tnumber">Team Number</label>
+                        <span class="bar"></span>
+                    </div>
 
                 </div>
                 <div class="column left">
@@ -527,7 +528,7 @@
                                 <div class="subtitle half left c">Center </div>
                                 <div class="subtitle half left d">Corner </div>
                             </div>
-                                <div class="buttons">
+                            <div class="buttons">
                                 <input type="checkbox" id="r1_toggle_6_default" name="r1_teliParticalsCenter" value="0" checked/>
                                 <input type="checkbox" id="r1_toggle_6_a" name="r1_teliParticalsCenter" value="10" />
                                 <label for="r1_toggle_6_a" class="quarter a">1-5</label>
@@ -598,13 +599,13 @@
                     </div>
                 </div>
             </form>
-             <form id="red_2" class="player dropshadow redAlliance">
+            <form id="red_2" class="player dropshadow redAlliance">
                 <div class="teamInfo material">
                     <div class="textfieldGroup  third">
-                    <input type="text" class="dark" name="r2_tnumber" id="r2_tnumber" required/>
-                    <label for="r2_tnumber">Team Number</label>
-                    <span class="bar"></span>
-                </div>
+                        <input type="text" class="dark" name="r2_tnumber" id="r2_tnumber" required/>
+                        <label for="r2_tnumber">Team Number</label>
+                        <span class="bar"></span>
+                    </div>
 
                 </div>
                 <div class="column left">
@@ -786,23 +787,28 @@
                 <span class="bar"></span>
             </div>
             <table id="matches">
-                <tr>
-                    <th>
-                        Match
-                    </th>
-                    <th>
-                        Blue 1
-                    </th>
-                    <th>
-                        Blue 2
-                    </th>
-                    <th>
-                        Red 1
-                    </th>
-                    <th>
-                        Red 2
-                    </th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>
+                            Match
+                        </th>
+                        <th>
+                            Blue 1
+                        </th>
+                        <th>
+                            Blue 2
+                        </th>
+                        <th>
+                            Red 1
+                        </th>
+                        <th>
+                            Red 2
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
             </table>
             <div class="left" id="addMatches">
                 <form id="matchInputForm">
@@ -832,59 +838,63 @@
                         <span class="bar"></span>
                     </div>
                 </form>
-                <button class="accent button full" onclick="addMatch('matchInputForm', 'matches', matchList)">Enter</button>
+                <button id="enterMatch" class="accent button full" onclick="addMatch('matchInputForm', 'matches', matchList)">Enter</button>
             </div>
         </div>
         <div class="right full" id="scoresList">
-            <h2>Match Results</h2>
             <table class="" id="scores">
-                <tr>
-                    <th>
-                        Team Number
-                    </th>
-                    <th>
-                        Match Number
-                    </th>
-                    <th>
-                        Alliance
-                    </th>
-                    <th>
-                        Blue Score
-                    </th>
-                    <th>
-                        Red Score
-                    </th>
-                    <th>
-                        Auto Beacon
-                    </th>
-                    <th>
-                        Particles Center
-                    </th>
-                    <th>
-                        Particles Corner
-                    </th>
-                    <th>
-                        Cap Ball
-                    </th>
-                    <th>
-                        Parking
-                    </th>
-                    <th>
-                        Teli-Op Beacons
-                    </th>
-                    <th>
-                        Particles Center
-                    </th>
-                    <th>
-                        Particles Corner
-                    </th>
-                    <th>
-                        Cap Ball
-                    </th>
-                    <th>
-                        Scout Score
-                    </th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>
+                            Team Number
+                        </th>
+                        <th>
+                            Match Number
+                        </th>
+                        <th>
+                            Alliance
+                        </th>
+                        <th>
+                            Blue Score
+                        </th>
+                        <th>
+                            Red Score
+                        </th>
+                        <th>
+                            Auto Beacon
+                        </th>
+                        <th>
+                            Particles Center
+                        </th>
+                        <th>
+                            Particles Corner
+                        </th>
+                        <th>
+                            Cap Ball
+                        </th>
+                        <th>
+                            Parking
+                        </th>
+                        <th>
+                            Teli-Op Beacons
+                        </th>
+                        <th>
+                            Particles Center
+                        </th>
+                        <th>
+                            Particles Corner
+                        </th>
+                        <th>
+                            Cap Ball
+                        </th>
+                        <th>
+                            Scout Score
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
             </table>
         </div>
         <div class="clear"></div>
@@ -893,14 +903,13 @@
     </datalist>
     <!-- Other People's scripts that I don't know how to make work in their own document -->
     <script>
-        var $rows = $('#matches tr');
         $('#matchSearch').keyup(function() {
-            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-
-            $rows.show().filter(function() {
-                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-                return !~text.indexOf(val);
-            }).hide();
+            var val = $(this).val().toLowerCase();
+            $('#matches tbody tr').hide();
+            var trs = $('table tbody tr').filter(function(d) {
+                return $(this).text().toLowerCase().indexOf(val) != -1;
+            });
+            trs.show();
         });
     </script>
 </body>
