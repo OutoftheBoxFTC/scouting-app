@@ -9,6 +9,7 @@ var scoresList = []; //array of all recorded scores
 var error; // This indicates whether or not there is an error
 var scoutID; // This is the id of the scout and should only be filled out once. Not currently implemented
 var rowCount = 0; //allows for unique ids when creating rows;
+var uploadedFile; // Used to store CSV information when uploading a file
 /*==============================================================================
 *   Variables that need manual setting ahead of time
 ==============================================================================*/
@@ -46,6 +47,39 @@ function findValueAt(index, array) {
     }
 }
 
+//Someone elses code to handel uploading a file and converting it to a variable
+function handleFileSelect(evt) {
+    var files = evt.target.files;
+    var f = files[0];
+    var reader = new FileReader();
+
+    reader.onload = (function(theFile) {
+        return function(e) {
+            // Print the contents of the file
+            var span = document.createElement('span');
+            var myInput = e.target.result;
+            console.log(myInput);
+            uploadedFile = myInput;
+            return;
+        };
+    })(f);
+    reader.readAsText(f);
+
+}
+
+//Takes an input of the CSV string data and parses it into an array
+function parseCSV(string) {
+    var array = [];
+    console.log(string);
+    var stage1Array = string.split('\n');
+    console.log(array);
+    for (i = 1; i < stage1Array.length; i++) {
+        var newArray = stage1Array[i - 1].split(',');
+        array.push(newArray);
+    }
+    console.log(array);
+}
+
 //takes an input a table and returns an array
 function tableToArray(tableID) {
     var name = 'table#' + tableID + ' ' + 'tr';
@@ -76,8 +110,29 @@ function makeList(listId) {
     })
 }
 
+function fileUpload() {
+    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+}
+
 // This is a highly specialized fumction that allows dynamic modification of the match list table
 $(document).ready(function() {
+    $("#submitButton").click(function() {
+        $("table#scores").find('td').click(function() {
+            var array = [];
+            var oldValue = $(this).text()
+            var value;
+            value = prompt("Please enter the new value. Enter no value if you wish to delete this row.");
+            if (value) {
+                $(this).text(value);
+                array = tableToArray('scores')
+                console.log(array);
+                scoresList = array;
+            } else {
+                $(this).text(oldValue);
+            }
+            return
+        });
+    });
     $("#enterMatch").click(function() {
         $("table#matches").find('td').click(function() {
             var array = [];
@@ -94,15 +149,18 @@ $(document).ready(function() {
             } else {
                 $(this).text(oldValue);
             }
+            return
         });
         $("table#matches").find('td').contextmenu(function(e) {
-          e.preventDefault();
+            e.preventDefault();
             if (confirm("Remove Row")) {
                 $(this).parent().remove();
             }
+            return
         });
     });
 });
+
 /*==============================================================================
 *   Custom Functions called at other times
 ==============================================================================*/
@@ -137,5 +195,23 @@ function fillInTeamNumbers(divID, fieldID, array) {
         value = newArray[i + 1];
         playerID = ele[i].id;
         $('#' + playerID + ' ' + 'input[id*="tnumber"]').val(value)
+    }
+}
+
+//Controls the modal box, will need to be updated to handle scores as well
+function modalControl() {
+    var modal = document.getElementById('importScores');
+    var btn = document.getElementById("importButton");
+    var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
     }
 }

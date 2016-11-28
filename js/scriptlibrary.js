@@ -121,6 +121,7 @@ function arrayCSV(data) {
         csvContent += index < data.length ? dataString + "\n" : dataString;
 
     });
+    console.log(csvContent);
     return csvContent;
 }
 

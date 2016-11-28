@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/forms.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/buttonColor.css">
+    <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/mediaqueries.css">
     <script src="js/jquery.js"></script>
     <script src="js/scripts.js"></script>
@@ -19,7 +20,31 @@
     <script src="js/formEntry.js"></script>
 </head>
 
-<body onload="makeList('teams')">
+<body onload="makeList('teams'); fileUpload(); modalControl()">
+    <div id="importScores" class="modal">
+
+        <div class="modal-content dropshadow">
+            <div class="modal-header">
+                <span class="close">×</span>
+                <h2>Import Scores</h2>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Please select a file to upload.
+                </p>
+                <center>
+                    <br />
+                    <input type="file" id="files" name="files[]" />
+                    <output id="list"></output>
+                    <div>
+                      <button class="button blue" onclick="">Upload Scores</button>;
+                      <button class="button accent" onclick="">Upload Match List</button>
+                    </div>
+                </center>
+            </div>
+        </div>
+
+    </div>
     <div class="fixed" id="topBar">
         <div class="right margin-0-1 vcenter" id="visibilityToggleContainer">
             <input type="checkbox" onclick="toggleShow('blue_1')" id="toggleBlue1" class="check" checked/>
@@ -53,9 +78,9 @@
                 </div>
             </form>
             <div class="right margin-0-1" id="controlButtons">
-                <button class="button accent " onclick="score('scores')">submit</button>
+                <button class="button accent " onclick="score('scores')" id="submitButton">submit</button>
                 <button class="button blue" onclick="downloadCSV(csv)">download</button>
-                <!--<button class="button none light " onclick="checkRequiredFields()">import</button> -->
+                <button class="button none light " id="importButton">import</button>
             </div>
         </div>
         <div class="clear"></div>
