@@ -13,7 +13,7 @@ var uploadedFile; // Used to store CSV information when uploading a file
 /*==============================================================================
 *   Variables that need manual setting ahead of time
 ==============================================================================*/
-teamList = [118, 2821, 4106, 4318, 5040, 5414, 5421, 6029, 6054, 6253, 6700, 6987, 8297, 8393, 8395, 8463, 8498, 8645, 9794, 9872, 10353, 10808, 11261, 11362];
+teamList = [118, 2821, 4106, 4318, 5040, 5414, 5421, 6029, 6054, 6253, 6700, 6987, 8297, 8393, 8395, 8463, 8498, 8645, 9872, 10353, 11261, 11362];
 
 /*==============================================================================
 *   Test Functions
@@ -37,6 +37,35 @@ function addNewRow(rowData, tableId) {
     console.log("Row Added to" + " " + tableId);
 }
 
+//Takes the name of an input field and determines which ONE item is checked. Used for scoring. It will return a 0 if no item is checked.
+function checkedValue(inputName) {
+    var value = $('input[name="' + inputName + '"]:checked').val();
+    if (value) {
+        value = value;
+    } else {
+        value = 0;
+    }
+    return value;
+}
+
+
+// Takes an input of a form Id and clears all checkbox, radio, number and text fields.(Used to clear the form after submitting a score)
+function clearForm(formID) {
+  formId= "scoreCards";
+    $('#' + formId +' ' + 'input[type=checkbox]').each(function() {
+        this.checked = false;
+    });
+    $('#' + formId +' ' + 'input[type=radio]').each(function() {
+        this.checked = false;
+    });
+    $('#' + formId +' ' + 'input[type=number]').each(function() {
+        this.value = null;
+    });
+    $('#' + formId +' ' + 'input[type=text]').each(function() {
+        this.value = null;
+    });
+}
+
 //Just finds the value at a given index after performing very basic validation.
 function findValueAt(index, array) {
     if (array) {
@@ -45,6 +74,17 @@ function findValueAt(index, array) {
     } else {
         console.log('Could not find the specified array');
     }
+}
+
+//Takes input of a parent element and returns an array of unique names (created for use with getting the scores)
+function getUniqueNameList(id) {
+  var set = new Set();
+  var ele = document.getElementById(id).elements;
+    for (var i = 0; i < ele.length; i++) {
+      set.add(ele[i].name)
+    }
+    var array = [...set]
+    return array;
 }
 
 //Someone elses code to handel uploading a file and converting it to a variable
@@ -114,7 +154,7 @@ function fileUpload() {
     document.getElementById('files').addEventListener('change', handleFileSelect, false);
 }
 
-// This is a highly specialized fumction that allows dynamic modification of the match list table
+// This is a highly specialized fumction that allows dynamic modification of the match and score list tables. It also allows for the deletion of matches, but not of scores
 $(document).ready(function() {
     $("#submitButton").click(function() {
         $("table#scores").find('td').click(function() {

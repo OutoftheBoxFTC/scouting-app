@@ -3,6 +3,7 @@
   2. Can a map be used to store team scores*/
 
 var playerIDList = new Set();
+var array = [[1,2], [3,4], [4,5]]
 
 function checkDuplication(teamNumber, matchNumber) {
   var pid = teamNumber + "_" + matchNumber;
@@ -14,6 +15,10 @@ function checkDuplication(teamNumber, matchNumber) {
   console.log(playerIDList);
 }
 
-function myFunction(array) {
-
+function myFunction() {
+ var myMap = new Map();
+  for (i = 0; i< array.length; i++){
+    myMap.set(i+1, array[i])
+    console.log(myMap);
+  }
 }

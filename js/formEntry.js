@@ -1,4 +1,4 @@
-Array.prototype.contains = function(v) {
+/*Array.prototype.contains = function(v) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] === v) return true;
     }
@@ -21,14 +21,21 @@ function resetCheckboxes() {
     });
 }
 
-function checkedValue(inputName) {
-    var value = $('input[name="' + inputName + '"]:checked').val();
-    if (value) {
-        value = value;
+
+function matchData(array, playerID) { //this function gets all the generic info that goes ahead of the scores in the table.
+    var teamNumber = $('#' + playerID + ' ' + 'input[id*="tnumber"]').val();
+    var matchNumber = document.getElementById('matchNumber').value;
+    var alliance;
+    var blueScore = document.getElementById('blueScore').value;;
+    var redScore = document.getElementById('redScore').value;
+    if (document.getElementById(playerID).classList.contains("redAlliance")) {
+        alliance = 'red'
+    } else if (document.getElementById(playerID).classList.contains("blueAlliance")) {
+        alliance = 'blue'
     } else {
-        value = 0;
+        alliance = "unknown"
     }
-    return value;
+    array.push(teamNumber, matchNumber, alliance, blueScore, redScore);
 }
 
 function getScores(array, id) {
@@ -51,6 +58,11 @@ function getScores(array, id) {
         }
     }
 }
+*/
+
+
+
+
 
 function checkRequiredFields() { // gross lazy function to perform basic field validation
     var required = [];
@@ -123,21 +135,6 @@ function checkRequiredFields() { // gross lazy function to perform basic field v
     }
 }
 
-function matchData(array, playerID) { //this function gets all the generic info that goes ahead of the scores in the table.
-    var teamNumber = $('#' + playerID + ' ' + 'input[id*="tnumber"]').val();
-    var matchNumber = document.getElementById('matchNumber').value;
-    var alliance;
-    var blueScore = document.getElementById('blueScore').value;;
-    var redScore = document.getElementById('redScore').value;
-    if (document.getElementById(playerID).classList.contains("redAlliance")) {
-        alliance = 'red'
-    } else if (document.getElementById(playerID).classList.contains("blueAlliance")) {
-        alliance = 'blue'
-    } else {
-        alliance = "unknown"
-    }
-    array.push(teamNumber, matchNumber, alliance, blueScore, redScore);
-}
 
 function score(tableID) {
     var ele = $('#scoreCards').children();
