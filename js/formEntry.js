@@ -1,33 +1,26 @@
-/*Array.prototype.contains = function(v) {
-    for (var i = 0; i < this.length; i++) {
-        if (this[i] === v) return true;
-    }
-    return false;
-};
-
-Array.prototype.unique = function() {
-    var arr = [];
-    for (var i = 0; i < this.length; i++) {
-        if (!arr.contains(this[i])) {
-            arr.push(this[i]);
+//Takes an input of the score card id and returns an array of all the checked values in that element
+function getTeamMatchScore(id) {
+    var array = [];
+    var ele = document.getElementById(id).elements;
+    var names = getUniqueNameList(id);
+    for (var i = 0; i < names.length; i++) { // for each name
+        var type = document.getElementsByName(names[i])[0].type;
+        if (type == "checkbox" || type == "radio") {
+            value = checkedValue(names[i]);
+            array.push(value)
         }
     }
-    return arr;
+    return array
 }
 
-function resetCheckboxes() {
-    $('input[type=checkbox]').each(function() {
-        this.checked = false;
-    });
-}
-
-
-function matchData(array, playerID) { //this function gets all the generic info that goes ahead of the scores in the table.
+//takes the score card id and returns an array of all text/number fields needed for the score list
+function getTeamMatchData(playerID) {
+    var array = [];
     var teamNumber = $('#' + playerID + ' ' + 'input[id*="tnumber"]').val();
-    var matchNumber = document.getElementById('matchNumber').value;
-    var alliance;
+    var matchNumber = document.getElementById('matchNumber').value;;
     var blueScore = document.getElementById('blueScore').value;;
     var redScore = document.getElementById('redScore').value;
+    var alliance;
     if (document.getElementById(playerID).classList.contains("redAlliance")) {
         alliance = 'red'
     } else if (document.getElementById(playerID).classList.contains("blueAlliance")) {
@@ -36,132 +29,111 @@ function matchData(array, playerID) { //this function gets all the generic info 
         alliance = "unknown"
     }
     array.push(teamNumber, matchNumber, alliance, blueScore, redScore);
+    return array;
 }
 
-function getScores(array, id) {
-    var name;
-    var names = [];
-    var ele = document.getElementById(id).elements;
-    var value;
-    var val;
-    var type;
-    for (var i = 0; i < ele.length; i++) {
-        name = ele[i].name;
-        names.push(name);
-    }
-    names = names.unique(); // eliminate all duplicate entries
-    for (var i = 0; i < names.length; i++) { // for each name
-        type = document.getElementsByName(names[i])[0].type;
-        if (type == "checkbox" || type == "radio") {
-            value = checkedValue(names[i]);
-            array.push(value)
-        }
-    }
-}
-*/
 
-
-
-
-
-function checkRequiredFields() { // gross lazy function to perform basic field validation
-    var required = [];
-    var missingValues = 0;
-    var value;
-    var teamNumber;
-    var matchNumber = document.getElementById('matchNumber').value;
-    var blueAllianceScore = document.getElementById('blueScore').value;;
-    var redAllianceScore = document.getElementById('redScore').value;
+// takes no parameters and checks that all the required match values are set. Very specific/non modular
+function checkRequiredFields() {
+    requiredValuesPresent = false;
+    cancel = false;
+    var required = new Map();
     var ele = $('#scoreCards').children();
-    required.push(matchNumber, blueAllianceScore, redAllianceScore);
+    required.set("Match Number", document.getElementById('matchNumber').value);
+    required.set("Blue Alliance Score", document.getElementById('blueScore').value);
+    required.set("Red Alliance Score", document.getElementById('redScore').value);
     for (var i = 0; i < ele.length; i++) {
         if (!ele[i].classList.contains('noShow')) {
             playerID = ele[i].id;
             teamNumber = $('#' + playerID + ' ' + 'input[id*="tnumber"]').val();
-            required.push(teamNumber);
+            required.set("Team Number" + " " + i, teamNumber);
         }
     }
-    for (var i = 0; i < required.length; i++) {
-        if (!required[i]) {
-            missingValues++;
+    while (!requiredValuesPresent && !cancel) {
+        mapFilled(required);
+        matchInfoFill(required);
+    }
+
+}
+
+// Determines of the match info map is filled. Could theoretically be uesd to determine if any map had a value of empty or null
+function mapFilled(myMap) {
+    cancel = false;
+    var array = [...myMap];
+    for (var i = 0; i < array.length; i++) {
+        var subArray = array[i];
+        var key = subArray[0];
+        var value = subArray[1];
+        if (value == "" || value == null || value > 500000) {
+            value = prompt("Please enter a value for" + " " + key);
+            if (!value) {
+                console.log("You hit cancel");
+                cancel = true;
+                return;
+            }
+            myMap.set(key, value);
+            return;
         }
     }
-    if (missingValues > 0) {
-        if (confirm(missingValues + " " + "required field(s) are currently missing. Would you like to manually enter them?") == true) {
-            if (!matchNumber) {
-                matchNumber = prompt("Please enter the match number");
-                if (!matchNumber) {
-                    console.log("You hit cancel");
-                    return
-                }
-                document.getElementById('matchNumber').value = matchNumber;
-            }
-            if (!blueAllianceScore) {
-                blueAllianceScore = prompt("Please enter the final score for Blue Alliance");
-                if (!blueAllianceScore) {
-                    console.log("You hit cancel");
-                    return
-                }
-                document.getElementById('blueScore').value = blueAllianceScore;
-            }
-            if (!redAllianceScore) {
-                redAllianceScore = prompt("Please enter the final score for Red Alliance");
-                if (!redAllianceScore) {
-                    console.log("You hit cancel");
-                    return
-                }
-                document.getElementById('redScore').value = redAllianceScore;
-            }
-            for (var i = 0; i < ele.length; i++) {
-                if (!ele[i].classList.contains('noShow')) {
-                    playerID = ele[i].id;
-                    teamNumber = $('#' + playerID + ' ' + 'input[id*="tnumber"]').val();
-                    if (!teamNumber) {
-                        teamNumber = prompt("Please enter the team number for:" + " " + playerID);
-                        if (!teamNumber) {
-                            console.log("You hit cancel");
-                        }
-                        $('#' + playerID + ' ' + 'input[id*="tnumber"]').val(teamNumber);
-                    }
-                }
-            }
-            error = false;
-            return;
-        } else {
-            console.log("You said no!");
-            error = true;
-            return;
+    requiredValuesPresent = true;
+    return
+}
+
+// Very specific function that fills out match info form based on user input. Takes a map as a parameter
+function matchInfoFill(map) {
+    var ele = $('#scoreCards').children();
+    matchNumber = map.get("Match Number");
+    blueAlliance = map.get("Blue Alliance Score");
+    redAlliance = map.get("Red Alliance Score");
+    document.getElementById('matchNumber').value = matchNumber;
+    document.getElementById('blueScore').value = blueAlliance;
+    document.getElementById('redScore').value = redAlliance;
+    for (var i = 0; i < ele.length; i++) {
+        if (!ele[i].classList.contains('noShow')) {
+            playerID = ele[i].id;
+            var key = "Team Number" + " " + i;
+            var value = map.get(key);
+            var playerID = ele[i].id;
+            $('#' + playerID + ' ' + 'input[id*="tnumber"]').val(value);
         }
     }
 }
 
+function arraysEqual(arr1, arr2) {
+    if(arr1.length !== arr2.length)
+        return false;
+    for(var i = arr1.length; i--;) {
+        if(arr1[i] !== arr2[i])
+            return false;
+    }
+
+    return true;
+}
 
 function score(tableID) {
+  //Verfies all necessary data present before continuing
+    checkRequiredFields();
+    console.log("All required fields are filled?:" + " " + requiredValuesPresent);
+    if(!requiredValuesPresent){
+      return;
+    }
+
+    //Actual scoring stuff
     var ele = $('#scoreCards').children();
     var i = 0;
-    checkRequiredFields();
-    if (error) {
-        error = false;
-        console.log("Missing required fields, score was not recorded.");
-        return
-    }
     while (i < ele.length) {
-        var scoreArray = []
         if (!ele[i].classList.contains('noShow')) {
-            matchData(scoreArray, ele[i].id);
-            getScores(scoreArray, ele[i].id);
-            allScores.push(scoreArray);
-            addNewRow(scoreArray, tableID)
+            var array1 = getTeamMatchData(ele[i].id);
+            var array2 = getTeamMatchScore(ele[i].id);
+            var scoreArray = array1.concat(array2);
+            scoresList.push(scoreArray);
+            addNewRow(scoreArray, tableID);
         } else {}
         i++;
     }
-    csv = arrayCSV(allScores)
+    scoresCSV = arrayCSV(scoresList);
     var forms = document.getElementById("scoreCards").children;
-    formReset("matchData");
-    for (i = 0; i < forms.length - 1; i++) {
-        var name = forms[i].id;
-        formReset(name);
-    }
-    resetCheckboxes();
+    clearForm("matchData");
+    clearForm("scoreCards")
     console.log("All fields cleared");
 }

@@ -134,9 +134,9 @@ function currentTime() {
     return time;
 }
 
-function downloadCSV(csv) {
+function downloadCSV(type, csv) {
     var time = currentTime();
-    var name = "Scores_" + time + ".csv";
+    var name = type + "_" + time + ".csv";
     var contentType = 'text/csv';
     if (!csv) {
         alert("No save data detected");
