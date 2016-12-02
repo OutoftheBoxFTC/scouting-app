@@ -38,8 +38,17 @@ function formArray(formID, array) { //in the future, set to return array
     }
 
 }
+//Clears all text values from a given form
+function formReset(formID) {
+    var ele = document.getElementById(formID);
 
-//Takes an array and table id as input and adds the row to the table
+    for (i = 0; i < ele.length; i++) {
+        ele.elements[i].value = null;
+    }
+}
+
+
+/*Takes an array and table id as input and adds the row to the table
 function aaddNewRow(rowData, tableId) {
     var table = document.getElementById(tableId);
     var row = table.insertRow(-1);
@@ -51,14 +60,6 @@ function aaddNewRow(rowData, tableId) {
     console.log("Row Added to" + " " + tableId);
 }
 
-//Clears all text values from a given form
-function formReset(formID) {
-    var ele = document.getElementById(formID);
-
-    for (i = 0; i < ele.length; i++) {
-        ele.elements[i].value = null;
-    }
-}
 
 
 //custom method that takes the match input, pushes it to an array, adds it to the specified table and then resets the form
@@ -80,7 +81,7 @@ function addMatch(formID, tableID, resetID, array) {
     matchList.push(newArray);
     console.log(newArray);
 }
-
+*/
 // custom method to populate score card team numbers based on the match number
 function getTeam(fieldID, matchArray, playerArray) {
     var value = document.getElementById(fieldID).value;
@@ -133,9 +134,9 @@ function currentTime() {
     return time;
 }
 
-function downloadCSV(csv) {
+function downloadCSV(type, csv) {
     var time = currentTime();
-    var name = "Scores_" + time + ".csv";
+    var name = type + "_" + time + ".csv";
     var contentType = 'text/csv';
     if (!csv) {
         alert("No save data detected");

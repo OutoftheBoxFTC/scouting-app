@@ -21,12 +21,32 @@
 </head>
 
 <body onload="makeList('teams'); fileUpload(); modalControl()">
+    <div id="exportScores" class="modal">
+        <div class="modal-content dropshadow">
+            <div class="modal-header">
+                <span class="close">×</span>
+                <h2>Download Data</h2>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Please select a file to download.
+                </p>
+                <center>
+                    <div>
+                        <button class="button none " onclick="downloadCSV('score', scoresCSV);closeModal('exportScores')">Scores</button>
+                        <button class="button none " onclick="downloadCSV('match', matchesCSV);closeModal('exportScores')">Matches</button>
+                    </div>
+                </center>
+            </div>
+        </div>
+    </div>
+
     <div id="importScores" class="modal">
 
         <div class="modal-content dropshadow">
             <div class="modal-header">
                 <span class="close">×</span>
-                <h2>Import Scores</h2>
+                <h2>Import Data</h2>
             </div>
             <div class="modal-body">
                 <p>
@@ -37,8 +57,8 @@
                     <input type="file" id="files" name="files[]" />
                     <output id="list"></output>
                     <div>
-                      <button class="button blue" onclick="">Upload Scores</button>;
-                      <button class="button accent" onclick="">Upload Match List</button>
+                        <button class="button blue" onclick="importScoreList(uploadedFile, 'scores'); closeModal('importScores')">Upload Scores</button>
+                        <button class="button accent" onclick="importMatchList(uploadedFile, 'matches'); closeModal('importScores')">Upload Match List</button>
                     </div>
                 </center>
             </div>
@@ -79,7 +99,7 @@
             </form>
             <div class="right margin-0-1" id="controlButtons">
                 <button class="button accent " onclick="score('scores')" id="submitButton">submit</button>
-                <button class="button blue" onclick="downloadCSV(csv)">download</button>
+                <button class="button blue" id="exportButton">download</button>
                 <button class="button none light " id="importButton">import</button>
             </div>
         </div>
