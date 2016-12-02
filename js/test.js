@@ -3,12 +3,42 @@
   2. Can a map be used to store team scores*/
 
 
-function checkDuplication(teamNumber, matchNumber) {
-  var pid = teamNumber + "_" + matchNumber;
-  if(playerIDList.has(pid)){
-    console.log('Attempting to add duplicate entry');
-    return
-  }
-  playerIDList.add(pid)
-  console.log(playerIDList);
+function checkDuplication(teamNumber, matchNumber, set) {
+    var pid = teamNumber + "_" + matchNumber;
+    if (set.has(pid)) {
+        console.log('Attempting to add duplicate entry');
+        return
+    }
+    set.add(pid)
+    console.log(playerIDList);
+}
+
+
+localStorage.matchList = matchsCsv;
+console.log(localStorage.matchList);
+localStorage.scoreList = scoresCSV;
+console.log(localStorage.scoresList);
+
+$(document).ready(function() {
+  var modal = document.getElementById('loadData');
+    if (typeof(Storage) !== "undefined") {
+          modal.style.display = "block";
+          $('.close').click(function(){
+            $('.modal').css('display', 'none')
+          })
+          window.onclick = function(event) {
+              if (event.target == modal) {
+                    $('.modal').css('display', 'none')
+              }
+          }
+
+        console.log("LocalStorage");
+      }
+});
+
+function importAllData() {
+
+}
+function clearData() {
+  localStorage.clear();
 }

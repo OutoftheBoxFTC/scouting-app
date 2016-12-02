@@ -16,16 +16,15 @@
   10. Do some basic analysis in browser
   11. Make the scores more readable
   12. Fix issues Haatim found:
-
-    b. There is no data validation on scores
-    c. If, after being prompted to enter a score you don't, there is a blank recorded
-    d. Change match lookup to work if not all matches are entered
+    b. VERY BASIC IMPLEMENTATION There is no data validation on scores
+    c. DONE If, after being prompted to enter a score you don't, there is a blank recorded
+    d. DONE Change match lookup to work if not all matches are entered
 
 Priority:
 1. Fix duplication
-2. Allow match/score import
-3. Fix Haatim's stuff
+2. DONE Allow match/score import
+3. DONE Fix Haatim's stuff
 4. Allow load of old data
-5. Fix modals
+5. DONE Fix modals
 6. Modal prompting load old data
 7. Start on analysis

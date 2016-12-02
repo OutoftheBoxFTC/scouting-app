@@ -21,6 +21,25 @@
 </head>
 
 <body onload="makeList('teams'); fileUpload(); modalControl()">
+    <div id="loadData" class="modal">
+        <div class="modal-content dropshadow">
+            <div class="modal-header">
+                <span class="close">×</span>
+                <h2>Import Saved Data</h2>
+            </div>
+            <div class="modal-body">
+                <p id="modalContent">
+
+                </p>
+                <center>
+                    <div>
+                        <button class="button none " onclick="importScoreList(localStorage.localScores, 'scores'); importMatchList(localStorage.localMatches, 'matches');closeModal('loadData')">Yes</button>
+                        <button class="button none " onclick="localStorage.clear();closeModal('loadData')">No</button>
+                    </div>
+                </center>
+            </div>
+        </div>
+    </div>
     <div id="exportScores" class="modal">
         <div class="modal-content dropshadow">
             <div class="modal-header">
@@ -40,7 +59,6 @@
             </div>
         </div>
     </div>
-
     <div id="importScores" class="modal">
 
         <div class="modal-content dropshadow">
