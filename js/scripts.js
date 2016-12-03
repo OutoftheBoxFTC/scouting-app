@@ -215,7 +215,7 @@ function tableToArray(tableID) {
 
 /*==============================================================================
 *    Functions that load or are called on page load
-==============================================================================*/
+*/
 //takes the name of a data list and fills it from the teamList array above
 function makeList(listId) {
     var list = document.getElementById(listId);
@@ -231,8 +231,9 @@ function fileUpload() {
 }
 
 // This is a highly specialized fumction that allows dynamic modification of the match and score list tables. It also allows for the deletion of matches, but not of scores
-(document).ready(function() {
+$(document).ready(function() {
     $(document).one('click', function() {
+
         $("table#scores").find('td').click(function() {
             var array = [];
             var oldValue = $(this).text()
@@ -278,10 +279,15 @@ function fileUpload() {
             if (confirm("Remove Row")) {
                 $(this).parent().remove();
             }
+            array = tableToArray('matches')
+                matchList = array;
+                matchesCSV = arrayCSV(matchList);
+                localStorage.currentTournament = tournamentName;
+                localStorage.localMatches = matchesCSV;
             return
         });
     });
-
+});
 
 //controls the load old match content modal window
 $(document).ready(function() {
@@ -303,7 +309,7 @@ $(document).ready(function() {
 });
 /*==============================================================================
 *   Custom Functions called at other times
-==============================================================================*/
+*/
 // called by fillInTeamNumbers, it validates input and provides useful debugging info
 function invalidIndexInput(array, value) {
 
