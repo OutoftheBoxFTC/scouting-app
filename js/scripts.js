@@ -231,8 +231,8 @@ function fileUpload() {
 }
 
 // This is a highly specialized fumction that allows dynamic modification of the match and score list tables. It also allows for the deletion of matches, but not of scores
-//$(document).ready(function() {
-    $(document).on('click', function() {
+(document).ready(function() {
+    $(document).one('click', function() {
         $("table#scores").find('td').click(function() {
             var array = [];
             var oldValue = $(this).text()
@@ -281,7 +281,7 @@ function fileUpload() {
             return
         });
     });
-//});
+
 
 //controls the load old match content modal window
 $(document).ready(function() {
