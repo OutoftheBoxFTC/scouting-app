@@ -132,6 +132,8 @@ function score(tableID) {
         i++;
     }
     scoresCSV = arrayCSV(scoresList);
+    localStorage.currentTournament = tournamentName;
+    localStorage.localScores = scoresCSV;
     var forms = document.getElementById("scoreCards").children;
     clearForm("matchData");
     clearForm("scoreCards")

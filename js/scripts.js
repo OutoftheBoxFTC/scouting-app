@@ -13,13 +13,19 @@ var uploadedFile; // Used to store CSV information when uploading a file
 var requiredValuesPresent = false; //used to tell if all values are accounted for
 var cancel = false; //used to indicate whether the user wishes to cancel the action
 var scoreIDList = new Set(); // holds all of the unique score ids to prevent duplication
+var tournamentName; //for importing matches, says when the last match data is from
 /*==============================================================================
 *   Variables that need manual setting ahead of time
 ==============================================================================*/
 teamList = [118, 2821, 4106, 4318, 5040, 5414, 5421, 6029, 6054, 6253, 6700, 6987, 8297, 8393, 8395, 8463, 8498, 8645, 9872, 10353, 11261, 11362];
-
+tournamentName = "West Virginia State"
 /*==============================================================================
 *   Test Functions
+==============================================================================*/
+
+
+/*==============================================================================
+*   Modular Functions
 ==============================================================================*/
 // used to test whatever is currently being worked on
 function addMatch(formID, tableID, resetID, array) {
@@ -40,40 +46,11 @@ function addMatch(formID, tableID, resetID, array) {
     matchList.push(newArray);
     console.log(newArray);
     matchesCSV = arrayCSV(matchList);
-}
-//Couldn't get it to read the array through a parameter variable, so this was split in half. Takes a csv and table ID with a hardcoded array to update the score or match list
-function importMatchList(csv, tableID) {
-  matchesCSV = csv;
-  matchList = parseCSV(csv);
-  var array = matchList;
-  var i = 0;
-  console.log(matchList);
-  $('#' + tableID + ' ' + 'tbody').empty();
-  while (i < array.length){
-    addNewRow(array[i], tableID);
-    i++;
-  }
-}
-//Couldn't get it to read the array through a parameter variable, so this was split in half. Takes a csv and table ID with a hardcoded array to update the score or match list
-function importScoreList(csv, tableID) {
-  scoresCSV = csv;
-  matchList = parseCSV(csv);
-  var i = 0;
-  console.log(matchList);
-  $('#' + tableID + ' ' + 'tbody').empty();
-  while (i < matchList.length){
-    addNewRow(matchList[i], tableID);
-    i++;
-  }
+    localStorage.localMatches = matchesCSV;
+    localStorage.currentTournament = tournamentName;
+    console.log("MatchStorage:" + localStorage.localMatches);
 }
 
-function closeModal(modalId) {
-  modal = document.getElementById(modalId);
-  modal.style.display = "none"
-}
-/*==============================================================================
-*   Modular Functions
-==============================================================================*/
 //Takes an array and table id as input and adds the row to the table body
 function addNewRow(rowData, tableId) {
     var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
@@ -113,6 +90,12 @@ function clearForm(formId) {
     $('#' + formId +' ' + 'input[type=text]').each(function() {
         this.value = null;
     });
+}
+
+//takes the id of a modal and then closes it. Could be replaced with jquerry
+function closeModal(modalId) {
+  modal = document.getElementById(modalId);
+  modal.style.display = "none"
 }
 
 // Finds a value in a 2D array at a specified location
@@ -164,6 +147,40 @@ function handleFileSelect(evt) {
         };
     })(f);
     reader.readAsText(f);
+}
+
+//Couldn't get it to read the array through a parameter variable, so this was split in half. Takes a csv and table ID with a hardcoded array to update the score or match list
+function importMatchList(csv, tableID) {
+  if (!csv){return}
+  matchesCSV = csv;
+  localStorage.localMatches = matchesCSV;
+  localStorage.currentTournament = tournamentName;
+  console.log("MatchStorage:" + localStorage.localMatches);
+  matchList = parseCSV(csv);
+  var array = matchList;
+  var i = 0;
+  console.log(matchList);
+  $('#' + tableID + ' ' + 'tbody').empty();
+  while (i < array.length){
+    addNewRow(array[i], tableID);
+    i++;
+  }
+}
+//Couldn't get it to read the array through a parameter variable, so this was split in half. Takes a csv and table ID with a hardcoded array to update the score or match list
+function importScoreList(csv, tableID) {
+  if (!csv){return}
+  scoresCSV = csv;
+  localStorage.localScores = scoresCSV;
+  localStorage.currentTournament = tournamentName;
+  console.log("ScoreStorage:" + localStorage.localScores);
+  matchList = parseCSV(csv);
+  var i = 0;
+  console.log(matchList);
+  $('#' + tableID + ' ' + 'tbody').empty();
+  while (i < matchList.length){
+    addNewRow(matchList[i], tableID);
+    i++;
+  }
 }
 
 //Takes an input of the CSV string data and parses it into an array
@@ -219,19 +236,20 @@ $(document).ready(function() {
             var array = [];
             var oldValue = $(this).text()
             var value;
-            value = prompt("Please enter the new value. Enter no value if you wish to delete this row.");
+            value = prompt("Please enter the new value.");
             if (value) {
                 $(this).text(value);
                 array = tableToArray('scores')
                 console.log(array);
                 scoresList = array;
+                return
             } else {
                 $(this).text(oldValue);
             }
             return
         });
     });
-    $(document).click(function() {
+    $("table#matches").click(function() {
         $("table#matches").find('td').click(function() {
             var array = [];
             var oldValue = $(this).text()
@@ -259,6 +277,24 @@ $(document).ready(function() {
     });
 });
 
+//controls the load old match content modal window
+$(document).ready(function() {
+  var modal = document.getElementById('loadData');
+    if (localStorage.localScores || localStorage.localMatches) {
+          modal.style.display = "block";
+          document.getElementById('modalContent').innerHTML = "Some old match data from the" + " <strong>" + tournamentName + " " + "Tournament </strong> was found. Would you like to import it? Please note that all data not imported will be lost.";
+          $('.close').click(function(){
+            $('.modal').css('display', 'none')
+          })
+          window.onclick = function(event) {
+              if (event.target == modal) {
+                    $('.modal').css('display', 'none')
+              }
+          }
+
+        console.log("LocalStorage");
+      }
+});
 /*==============================================================================
 *   Custom Functions called at other times
 ==============================================================================*/
@@ -304,27 +340,19 @@ function modalControl() {
     var modal1 = document.getElementById('importScores');
     var modal2 = document.getElementById('exportScores');
     var btn1 = document.getElementById("importButton");
-    var btn2 = document.getElementById("exportButton");
-    var span1 = document.getElementsByClassName("close")[1];
-    var span2 = document.getElementsByClassName("close")[0];
+    var btn2 = document.getElementById("exportButton");;
     btn1.onclick = function() {
         modal1.style.display = "block";
     }
     btn2.onclick = function() {
         modal2.style.display = "block";
     }
-    span1.onclick = function() {
-        modal1.style.display = "none";
-    }
-    span2.onclick = function() {
-        modal2.style.display = "none";
-    }
+    $('.close').click(function(){
+      $('.modal').css('display', 'none')
+    })
     window.onclick = function(event) {
-        if (event.target == modal1) {
-            modal1.style.display = "none";
-        }
-        if (event.target == modal2) {
-            modal2.style.display = "none";
+        if (event.target == modal1 || event.target == modal2) {
+              $('.modal').css('display', 'none')
         }
     }
 }

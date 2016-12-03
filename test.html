@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Local Storage test</title>
+    <link rel="shortcut icon" href="images/icons/logo.ico" type="image/x-icon" />
+    <meta name="description" content="An offline scouting app">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/buttonColor.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/mediaqueries.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/test.js"></script>
+    <script src="js/scripts.js"></script>
+  </head>
+  <body onload="">
+    <div id="loadData" class="modal">
+        <div class="modal-content dropshadow">
+            <div class="modal-header">
+                <span class="close">×</span>
+                <h2>Import Saved Data</h2>
+            </div>
+            <div class="modal-body">
+                <p>
+                    It looks like you have data from a previous session. Would you like to load it? Data not loaded will be lost.
+                </p>
+                <center>
+                    <div>
+                        <button class="button none " onclick="importAllData();closeModal('loadData')">Yes</button>
+                        <button class="button none " onclick="clearData();closeModal('loadData')">No</button>
+                    </div>
+                </center>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
