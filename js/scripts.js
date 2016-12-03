@@ -14,11 +14,12 @@ var requiredValuesPresent = false; //used to tell if all values are accounted fo
 var cancel = false; //used to indicate whether the user wishes to cancel the action
 var scoreIDList = new Set(); // holds all of the unique score ids to prevent duplication
 var tournamentName; //for importing matches, says when the last match data is from
+var debug = 0; //used for debugging
 /*==============================================================================
 *   Variables that need manual setting ahead of time
 ==============================================================================*/
 teamList = [118, 2821, 4106, 4318, 5040, 5414, 5421, 6029, 6054, 6253, 6700, 6987, 8297, 8393, 8395, 8463, 8498, 8645, 9872, 10353, 11261, 11362];
-tournamentName = "West Virginia State"
+tournamentName = "West Virginia"
 /*==============================================================================
 *   Test Functions
 ==============================================================================*/
@@ -231,7 +232,8 @@ function fileUpload() {
 
 // This is a highly specialized fumction that allows dynamic modification of the match and score list tables. It also allows for the deletion of matches, but not of scores
 $(document).ready(function() {
-    $(document).click(function() {
+    $(document).one('click', function() {
+
         $("table#scores").find('td').click(function() {
             var array = [];
             var oldValue = $(this).text()
@@ -242,14 +244,17 @@ $(document).ready(function() {
                 array = tableToArray('scores')
                 console.log(array);
                 scoresList = array;
+                scoresCSV = arrayCSV(scoresList);
+                localStorage.currentTournament = tournamentName;
+                localStorage.localScores = scoresCSV;
                 return
             } else {
                 $(this).text(oldValue);
+                return
             }
-            return
         });
     });
-    $("table#matches").click(function() {
+    $(document).one('click',function() {
         $("table#matches").find('td').click(function() {
             var array = [];
             var oldValue = $(this).text()
@@ -258,10 +263,12 @@ $(document).ready(function() {
             if (value) {
                 $(this).text(value);
                 array = tableToArray('matches')
-                console.log(array);
                 matchList = array;
-                console.log('matchlist:' + matchList);
-                fillInTeamNumbers('scoreCards', 'matchNumber', matchList)
+                matchesCSV = arrayCSV(matchList);
+                localStorage.currentTournament = tournamentName;
+                localStorage.localMatches = matchesCSV;
+                fillInTeamNumbers('scoreCards', 'matchNumber', matchList);
+                return
             } else {
                 $(this).text(oldValue);
             }
@@ -282,7 +289,7 @@ $(document).ready(function() {
   var modal = document.getElementById('loadData');
     if (localStorage.localScores || localStorage.localMatches) {
           modal.style.display = "block";
-          document.getElementById('modalContent').innerHTML = "Some old match data from the" + " <strong>" + tournamentName + " " + "Tournament </strong> was found. Would you like to import it? Please note that all data not imported will be lost.";
+          document.getElementById('modalContent').innerHTML = "Some old match data from the" + " <strong>" + localStorage.currentTournament + " " + "Tournament </strong> was found. Would you like to import it? Please note that all data not imported will be lost.";
           $('.close').click(function(){
             $('.modal').css('display', 'none')
           })
