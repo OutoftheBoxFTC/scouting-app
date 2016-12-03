@@ -131,6 +131,8 @@ function score(tableID) {
         } else {}
         i++;
     }
+    scoresList = tableToArray(tableID)
+    console.log(scoresList)
     scoresCSV = arrayCSV(scoresList);
     localStorage.currentTournament = tournamentName;
     localStorage.localScores = scoresCSV;

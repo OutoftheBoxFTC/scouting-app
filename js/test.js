@@ -42,3 +42,32 @@ function importAllData() {
 function clearData() {
   localStorage.clear();
 }
+
+
+$(document).ready(function() {
+    $("#enterMatch").click(function() {
+        $("table#matches").find('td').click(function() {
+            var array = [];
+            var oldValue = $(this).text()
+            var value;
+            value = prompt("Please enter the new value. Enter no value if you wish to delete this row.");
+            if (value) {
+                $(this).text(value);
+                array = tableToArray('matches')
+                console.log(array);
+                matchList = array;
+                console.log('matchlist:' + matchList);
+                fillInTeamNumbers('scoreCards', 'matchNumber', matchList)
+            } else {
+                $(this).text(oldValue);
+            }
+        });
+        $("table#matches").find('td').contextmenu(function(e) {
+          e.preventDefault();
+            if (confirm("Remove Row")) {
+                $(this).parent().remove();
+            }
+        });
+    });
+});
+/*===============
