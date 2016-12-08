@@ -9,6 +9,11 @@ function getTeamMatchScore(id) {
             value = checkedValue(names[i]);
             array.push(value)
         }
+          if (type == "text" || type == "number" || type == "textarea") {
+            var value = document.getElementsByName(names[i])[0].value;
+            value = value.replace(/\,/g," ");
+            array.push(value);
+          }
     }
     return array
 }
@@ -16,7 +21,7 @@ function getTeamMatchScore(id) {
 //takes the score card id and returns an array of all text/number fields needed for the score list
 function getTeamMatchData(playerID) {
     var array = [];
-    var teamNumber = $('#' + playerID + ' ' + 'input[id*="tnumber"]').val();
+    //var teamNumber = $('#' + playerID + ' ' + 'input[id*="tnumber"]').val();
     var matchNumber = document.getElementById('matchNumber').value;;
     var blueScore = document.getElementById('blueScore').value;;
     var redScore = document.getElementById('redScore').value;
@@ -28,7 +33,7 @@ function getTeamMatchData(playerID) {
     } else {
         alliance = "unknown"
     }
-    array.push(teamNumber, matchNumber, alliance, blueScore, redScore);
+    array.push(matchNumber, alliance, blueScore, redScore);
     return array;
 }
 
@@ -126,6 +131,8 @@ function score(tableID) {
             var array1 = getTeamMatchData(ele[i].id);
             var array2 = getTeamMatchScore(ele[i].id);
             var scoreArray = array1.concat(array2);
+            scoreArray.unshift(scoreArray[4]); //Team number is in the fourth position, so this adds a duplicate of it to the front
+            scoreArray.splice(5,1)//this removes the original instance of team number
             scoresList.push(scoreArray);
             addNewRow(scoreArray, tableID);
         } else {}
@@ -138,6 +145,6 @@ function score(tableID) {
     localStorage.localScores = scoresCSV;
     var forms = document.getElementById("scoreCards").children;
     clearForm("matchData");
-    clearForm("scoreCards")
+    clearForm("scoreCards");
     console.log("All fields cleared");
 }

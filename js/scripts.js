@@ -18,11 +18,72 @@ var debug = 0; //used for debugging
 /*==============================================================================
 *   Variables that need manual setting ahead of time
 ==============================================================================*/
-teamList = [118, 2821, 4106, 4318, 5040, 5414, 5421, 6029, 6054, 6253, 6700, 6987, 8297, 8393, 8395, 8463, 8498, 8645, 9872, 10353, 11261, 11362];
-tournamentName = "West Virginia"
-/*==============================================================================
-*   Test Functions
-==============================================================================*/
+teamList = [6700, 8297];
+tournamentName = "Haymarket Regional"
+    /*==============================================================================
+    *   Test Functions
+    ==============================================================================*/
+jQuery.fn.selectText = function() {
+    var doc = document;
+    var element = this[0];
+    console.log(this, element);
+    if (doc.body.createTextRange) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+    } else if (window.getSelection) {
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+};
+// These are a highly specialized set of functions that allows dynamic modification of the match and score list tables. It also allows for the deletion of matches and scores
+$('tbody').live('click', function() {
+    var thisTD = $(event.target).closest("td")
+    $(event.target).closest("td").toggleClass('select')
+    thisTD.attr('contenteditable', 'true')
+    var oldValue = thisTD.text();
+    var id = thisTD.attr('id');
+    var range = document.createRange();
+    var selection = window.getSelection();
+    range.selectNodeContents(document.getElementById(id));
+    selection.removeAllRanges();
+    selection.addRange(range);
+});
+$('tbody').live('blur', function() {
+    var thisTD = $(event.target).closest("td")
+    $(event.target).closest("td").toggleClass('select')
+    thisTD.attr('contenteditable', 'false')
+    matchList = tableToArray('matches');
+    scoresList = tableToArray('scores');
+    fillInTeamNumbers('scoreCards', 'matchNumber', matchList);
+    scoresCSV = arrayCSV(scoresList);
+    matchesCSV = arrayCSV(matchList);
+    localStorage.currentTournament = tournamentName;
+    localStorage.localMatches = matchesCSV;
+    localStorage.localScores = scoresCSV;
+    return
+});
+$('tbody').live('contextmenu', function(e) {
+    var thisTD = $(event.target).closest("td");
+    e.preventDefault();
+    if (confirm("Remove Row")) {
+        thisTD.parent().remove();
+    }
+    matchList = tableToArray('matches');
+    scoresList = tableToArray('scores');
+    console.log(scoresList);
+    console.log(matchList);
+    scoresCSV = arrayCSV(scoresList);
+    matchesCSV = arrayCSV(matchList);
+    localStorage.currentTournament = tournamentName;
+    localStorage.localMatches = matchesCSV;
+    localStorage.localScores = scoresCSV;
+    return
+});
+
 
 
 /*==============================================================================
@@ -60,6 +121,7 @@ function addNewRow(rowData, tableId) {
     row.id = String(tableId + '_row' + rowCount);
     for (i = 0; i < rowData.length; i++) {
         cell = row.insertCell(i);
+        cell.id = String(tableId + '_row' + rowCount + '_cell' + i);
         cell.innerHTML = rowData[i];
     }
     console.log("Row Added to" + " " + tableId);
@@ -79,37 +141,34 @@ function checkedValue(inputName) {
 
 // Takes an input of a form Id and clears all checkbox, radio, number and text fields.(Used to clear the form after submitting a score)
 function clearForm(formId) {
-    $('#' + formId +' ' + 'input[type=checkbox]').each(function() {
+    $('#' + formId + ' ' + 'input[type=checkbox], #' + formId + ' ' + 'input[type=radio]').each(function() {
         this.checked = false;
     });
-    $('#' + formId +' ' + 'input[type=radio]').each(function() {
-        this.checked = false;
-    });
-    $('#' + formId +' ' + 'input[type=number]').each(function() {
+    $('#' + formId + ' ' + 'input[type=number]').each(function() {
         this.value = null;
     });
-    $('#' + formId +' ' + 'input[type=text]').each(function() {
+    $('#' + formId + ' ' + 'input[type=number], #' + formId + ' ' + 'input[type=text], #' + formId + ' ' + 'textarea').each(function() {
         this.value = null;
     });
 }
 
 //takes the id of a modal and then closes it. Could be replaced with jquerry
 function closeModal(modalId) {
-  modal = document.getElementById(modalId);
-  modal.style.display = "none"
+    modal = document.getElementById(modalId);
+    modal.style.display = "none"
 }
 
 // Finds a value in a 2D array at a specified location
 function find2DArrayIndex(array, value, position) {
-  for (i = 0; i < array.length; i++){
-    var sub = array[i];
-    if (sub[position] == value){
-      return i;
+    for (i = 0; i < array.length; i++) {
+        var sub = array[i];
+        if (sub[position] == value) {
+            return i;
+        }
     }
-  }
-  if (value){
-    alert('No data exists for that value')
-  }
+    if (value) {
+        alert('No data exists for that value')
+    }
 }
 
 //Just finds the value at a given index after performing very basic validation.
@@ -124,10 +183,10 @@ function findValueAt(index, array) {
 
 //Takes input of a parent element and returns an array of unique names (created for use with getting the scores)
 function getUniqueNameList(id) {
-  var set = new Set();
-  var ele = document.getElementById(id).elements;
+    var set = new Set();
+    var ele = document.getElementById(id).elements;
     for (var i = 0; i < ele.length; i++) {
-      set.add(ele[i].name)
+        set.add(ele[i].name)
     }
     var array = [...set]
     return array;
@@ -152,36 +211,40 @@ function handleFileSelect(evt) {
 
 //Couldn't get it to read the array through a parameter variable, so this was split in half. Takes a csv and table ID with a hardcoded array to update the score or match list
 function importMatchList(csv, tableID) {
-  if (!csv){return}
-  matchesCSV = csv;
-  localStorage.localMatches = matchesCSV;
-  localStorage.currentTournament = tournamentName;
-  console.log("MatchStorage:" + localStorage.localMatches);
-  matchList = parseCSV(csv);
-  var array = matchList;
-  var i = 0;
-  console.log(matchList);
-  $('#' + tableID + ' ' + 'tbody').empty();
-  while (i < array.length){
-    addNewRow(array[i], tableID);
-    i++;
-  }
+    if (!csv) {
+        return
+    }
+    matchesCSV = csv;
+    localStorage.localMatches = matchesCSV;
+    localStorage.currentTournament = tournamentName;
+    console.log("MatchStorage:" + localStorage.localMatches);
+    matchList = parseCSV(csv);
+    var array = matchList;
+    var i = 0;
+    console.log(matchList);
+    $('#' + tableID + ' ' + 'tbody').empty();
+    while (i < array.length) {
+        addNewRow(array[i], tableID);
+        i++;
+    }
 }
 //Couldn't get it to read the array through a parameter variable, so this was split in half. Takes a csv and table ID with a hardcoded array to update the score or match list
 function importScoreList(csv, tableID) {
-  if (!csv){return}
-  scoresCSV = csv;
-  localStorage.localScores = scoresCSV;
-  localStorage.currentTournament = tournamentName;
-  console.log("ScoreStorage:" + localStorage.localScores);
-  matchList = parseCSV(csv);
-  var i = 0;
-  console.log(matchList);
-  $('#' + tableID + ' ' + 'tbody').empty();
-  while (i < matchList.length){
-    addNewRow(matchList[i], tableID);
-    i++;
-  }
+    if (!csv) {
+        return
+    }
+    scoresCSV = csv;
+    localStorage.localScores = scoresCSV;
+    localStorage.currentTournament = tournamentName;
+    console.log("ScoreStorage:" + localStorage.localScores);
+    matchList = parseCSV(csv);
+    var i = 0;
+    console.log(matchList);
+    $('#' + tableID + ' ' + 'tbody').empty();
+    while (i < matchList.length) {
+        addNewRow(matchList[i], tableID);
+        i++;
+    }
 }
 
 //Takes an input of the CSV string data and parses it into an array
@@ -214,8 +277,8 @@ function tableToArray(tableID) {
 }
 
 /*==============================================================================
-*    Functions that load or are called on page load
-*/
+ *    Functions that load or are called on page load
+ */
 //takes the name of a data list and fills it from the teamList array above
 function makeList(listId) {
     var list = document.getElementById(listId);
@@ -230,86 +293,29 @@ function fileUpload() {
     document.getElementById('files').addEventListener('change', handleFileSelect, false);
 }
 
-// This is a highly specialized fumction that allows dynamic modification of the match and score list tables. It also allows for the deletion of matches, but not of scores
-$(document).ready(function() {
-    $(document).one('click', function() {
 
-        $("table#scores").find('td').click(function() {
-            var array = [];
-            var oldValue = $(this).text()
-            var value;
-            value = prompt("Please enter the new value.");
-            if (value) {
-                $(this).text(value);
-                array = tableToArray('scores')
-                console.log(array);
-                scoresList = array;
-                scoresCSV = arrayCSV(scoresList);
-                localStorage.currentTournament = tournamentName;
-                localStorage.localScores = scoresCSV;
-                return
-            } else {
-                $(this).text(oldValue);
-                return
-            }
-        });
-    });
-    $(document).one('click',function() {
-        $("table#matches").find('td').click(function() {
-            var array = [];
-            var oldValue = $(this).text()
-            var value;
-            value = prompt("Please enter the new value. Enter no value if you wish to delete this row.");
-            if (value) {
-                $(this).text(value);
-                array = tableToArray('matches')
-                matchList = array;
-                matchesCSV = arrayCSV(matchList);
-                localStorage.currentTournament = tournamentName;
-                localStorage.localMatches = matchesCSV;
-                fillInTeamNumbers('scoreCards', 'matchNumber', matchList);
-                return
-            } else {
-                $(this).text(oldValue);
-            }
-            return
-        });
-        $("table#matches").find('td').contextmenu(function(e) {
-            e.preventDefault();
-            if (confirm("Remove Row")) {
-                $(this).parent().remove();
-            }
-            array = tableToArray('matches')
-                matchList = array;
-                matchesCSV = arrayCSV(matchList);
-                localStorage.currentTournament = tournamentName;
-                localStorage.localMatches = matchesCSV;
-            return
-        });
-    });
-});
 
 //controls the load old match content modal window
 $(document).ready(function() {
-  var modal = document.getElementById('loadData');
+    var modal = document.getElementById('loadData');
     if (localStorage.localScores || localStorage.localMatches) {
-          modal.style.display = "block";
-          document.getElementById('modalContent').innerHTML = "Some old match data from the" + " <strong>" + localStorage.currentTournament + " " + "Tournament </strong> was found. Would you like to import it? Please note that all data not imported will be lost.";
-          $('.close').click(function(){
+        modal.style.display = "block";
+        document.getElementById('modalContent').innerHTML = "Some old match data from the" + " <strong>" + localStorage.currentTournament + " " + "Tournament </strong> was found. Would you like to import it? Please note that all data not imported will be lost.";
+        $('.close').click(function() {
             $('.modal').css('display', 'none')
-          })
-          window.onclick = function(event) {
-              if (event.target == modal) {
-                    $('.modal').css('display', 'none')
-              }
-          }
+        })
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                $('.modal').css('display', 'none')
+            }
+        }
 
         console.log("LocalStorage");
-      }
+    }
 });
 /*==============================================================================
-*   Custom Functions called at other times
-*/
+ *   Custom Functions called at other times
+ */
 // called by fillInTeamNumbers, it validates input and provides useful debugging info
 function invalidIndexInput(array, value) {
 
@@ -329,13 +335,12 @@ function invalidIndexInput(array, value) {
 
 //This takes the name of the div holding the score cards, the name of the field where the match number is entered and the match list array and then fills out the team number text field for each score card based on it. It activates when the text field loses focus.
 function fillInTeamNumbers(divID, fieldID, array) {
-  console.log(array);
+    console.log(array);
     var divID;
     var ele = $('#' + divID).children();
     var value;
-    var x = document.getElementById(fieldID).value;//User entered match number
+    var x = document.getElementById(fieldID).value; //User entered match number
     var index = find2DArrayIndex(array, x, 0);
-    console.log(index);
     var newArray = findValueAt(index, array);
     if (invalidIndexInput(array, index + 1)) {
         return
@@ -359,12 +364,12 @@ function modalControl() {
     btn2.onclick = function() {
         modal2.style.display = "block";
     }
-    $('.close').click(function(){
-      $('.modal').css('display', 'none')
+    $('.close').click(function() {
+        $('.modal').css('display', 'none')
     })
     window.onclick = function(event) {
         if (event.target == modal1 || event.target == modal2) {
-              $('.modal').css('display', 'none')
+            $('.modal').css('display', 'none')
         }
     }
 }
