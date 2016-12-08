@@ -30,6 +30,7 @@
 .sixth {width: 16%}
 .center {margin: auto;}
 .contain{object-fit:contain;}
+.select {border-bottom: 2px solid black}
 /* Page Styles */
 body {font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif}
 html {
@@ -89,6 +90,7 @@ height: 100%;}
 }
 #scoreCards{
   width: 78%;
+	margin-bottom: 2%;
 }
 /* Table Navigation */
 #matchList {width:20%;
@@ -103,14 +105,17 @@ th {font-size: 12px;
   padding: 10px 5px;
   border-bottom: 1px solid #9E9E9E}
 
-td {width:20%;
+td {max-width:20%;
   padding: 10px 3px;
   border-bottom: 1px solid #EEEEEE;
   font-size: 12px;
   color: #424242;
-  text-align: center;}
+  text-align: center;
+	white-space: nowrap;}
 
-tr:hover {background: #E0E0E0;}
+tbody tr:hover {background: #E0E0E0;}
+
+#scores td:last-of-type{text-align: left}
 
 /* Table Button Styles */
 #addMatches{
@@ -140,3 +145,5 @@ tr:hover {background: #E0E0E0;}
     background-color: #ddd;
     float:left;
   }
+* {outline:none;}
+tbody ::selection { background: white; }

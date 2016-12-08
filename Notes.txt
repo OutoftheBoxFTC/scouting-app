@@ -1,0 +1,11 @@
+  -------------------------------------------
+  Goals
+  -------------------------------------------
+  1. Clean code up
+  2. Figure out how to get tables editable
+  3. Switch red and blue
+  4. Have the score function manage text areas too
+  5. Add a notes section.
+  6. Have import check for duplication
+  7. Check multi-tab functionality
+  8. Add buttons to delete all even or odd matches

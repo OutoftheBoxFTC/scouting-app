@@ -1,7 +1,5 @@
 var matchList = [];
 var allScores = [];
-var playerList = ['b1_', 'b2_', 'r1_', 'r2_']
-var teamList = [118, 2821, 4106, 4318, 5040, 5414, 5421, 6029, 6054, 6253, 6700, 6987, 8297, 8393, 8395, 8463, 8498, 8645, 9794, 9872, 10353, 10808, 11261, 11362];
 var csv;
 var error = false;
 
@@ -40,9 +38,18 @@ function formArray(formID, array) { //in the future, set to return array
     }
 
 }
+//Clears all text values from a given form
+function formReset(formID) {
+    var ele = document.getElementById(formID);
 
-//Takes an array and table id as input and adds the row to the table
-function addNewRow(rowData, tableId) {
+    for (i = 0; i < ele.length; i++) {
+        ele.elements[i].value = null;
+    }
+}
+
+
+/*Takes an array and table id as input and adds the row to the table
+function aaddNewRow(rowData, tableId) {
     var table = document.getElementById(tableId);
     var row = table.insertRow(-1);
 
@@ -53,30 +60,7 @@ function addNewRow(rowData, tableId) {
     console.log("Row Added to" + " " + tableId);
 }
 
-//Clears all text values from a given form
-function formReset(formID) {
-    var ele = document.getElementById(formID);
 
-    for (i = 0; i < ele.length; i++) {
-        ele.elements[i].value = null;
-    }
-}
-
-//takes ensures that a number can be an index for the match array
-function invalidMatchInput(matchArray, value) {
-    if (!value) {
-        console.log('No match number entered.');
-        return true;
-    }
-    if (matchArray.length < 1) { //input in range
-        console.log('No matches logged');
-        return true;
-    }
-    if (value > matchArray.length) { //input in range
-        console.log('Match Number out of range.');
-        return true;
-    }
-}
 
 //custom method that takes the match input, pushes it to an array, adds it to the specified table and then resets the form
 function addMatch(formID, tableID, resetID, array) {
@@ -97,7 +81,7 @@ function addMatch(formID, tableID, resetID, array) {
     matchList.push(newArray);
     console.log(newArray);
 }
-
+*/
 // custom method to populate score card team numbers based on the match number
 function getTeam(fieldID, matchArray, playerArray) {
     var value = document.getElementById(fieldID).value;
@@ -138,6 +122,7 @@ function arrayCSV(data) {
         csvContent += index < data.length ? dataString + "\n" : dataString;
 
     });
+    console.log(csvContent);
     return csvContent;
 }
 
@@ -149,9 +134,9 @@ function currentTime() {
     return time;
 }
 
-function downloadCSV(csv) {
+function downloadCSV(type, csv) {
     var time = currentTime();
-    var name = "Scores_" + time + ".csv";
+    var name = type + "_" + time + ".csv";
     var contentType = 'text/csv';
     if (!csv) {
         alert("No save data detected");
