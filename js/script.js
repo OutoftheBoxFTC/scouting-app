@@ -1,13 +1,4 @@
 $( document ).ready(function() {
-var height
-$( ".check" ).click(function() {
-  height = $('#scoreCards').height();
-  //console.log(height)
-  $('#matchList').css("max-height",height);
-  //console.log('matchList height: ' + $('#matchList').height())
-
-});
-
 		// the selector will match all input controls of type :checkbox
 		// and attach a click event handler
 		$("input:checkbox").on('click', function() {
@@ -25,6 +16,4 @@ $( ".check" ).click(function() {
 				$box.prop("checked", false);
 			}
 		});
-
-
 });

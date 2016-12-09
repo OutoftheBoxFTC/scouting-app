@@ -19,10 +19,11 @@ var debug = 0; //used for debugging
 *   Variables that need manual setting ahead of time
 ==============================================================================*/
 teamList = [6700, 8297];
-tournamentName = "Haymarket Regional"
+tournamentName = "Northern Regional"
     /*==============================================================================
     *   Test Functions
     ==============================================================================*/
+//Created by someone else, creates a range to select something
 jQuery.fn.selectText = function() {
     var doc = document;
     var element = this[0];
@@ -40,7 +41,7 @@ jQuery.fn.selectText = function() {
     }
 };
 // These are a highly specialized set of functions that allows dynamic modification of the match and score list tables. It also allows for the deletion of matches and scores
-$('tbody').live('click', function() {
+$('#matchTab tbody').live('click', function() {
     var thisTD = $(event.target).closest("td")
     $(event.target).closest("td").toggleClass('select')
     thisTD.attr('contenteditable', 'true')
@@ -52,7 +53,7 @@ $('tbody').live('click', function() {
     selection.removeAllRanges();
     selection.addRange(range);
 });
-$('tbody').live('blur', function() {
+$('#matchTab tbody').live('blur', function() {
     var thisTD = $(event.target).closest("td")
     $(event.target).closest("td").toggleClass('select')
     thisTD.attr('contenteditable', 'false')
@@ -66,7 +67,7 @@ $('tbody').live('blur', function() {
     localStorage.localScores = scoresCSV;
     return
 });
-$('tbody').live('contextmenu', function(e) {
+$('#matchTab  tbody').live('contextmenu', function(e) {
     var thisTD = $(event.target).closest("td");
     e.preventDefault();
     if (confirm("Remove Row")) {
@@ -84,7 +85,14 @@ $('tbody').live('contextmenu', function(e) {
     return
 });
 
-
+//
+function tabControl(tabGroup, navID, divID) {
+  $('.' + tabGroup).each(function(){
+    $(this).removeClass("active")
+  })
+  $('#' + navID).addClass("active")
+  $('#' + divID).addClass("active")
+}
 
 /*==============================================================================
 *   Modular Functions
@@ -102,7 +110,7 @@ function addMatch(formID, tableID, resetID, array) {
         return;
     }
     addNewRow(newArray, tableID);
-    formReset(formID, resetID);
+    clearForm(formID);
     ele.elements[0].focus();
     ele.elements[0].value = matchCount;
     matchList.push(newArray);
