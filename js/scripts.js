@@ -13,6 +13,7 @@ var uploadedFile; // Used to store CSV information when uploading a file
 var requiredValuesPresent = false; //used to tell if all values are accounted for
 var cancel = false; //used to indicate whether the user wishes to cancel the action
 var scoreIDList = new Set(); // holds all of the unique score ids to prevent duplication
+var teamMatches = new Map();
 var tournamentName; //for importing matches, says when the last match data is from
 var debug = 0; //used for debugging
 /*==============================================================================
@@ -20,79 +21,11 @@ var debug = 0; //used for debugging
 ==============================================================================*/
 teamList = [6700, 8297];
 tournamentName = "Northern Regional"
-    /*==============================================================================
-    *   Test Functions
-    ==============================================================================*/
-//Created by someone else, creates a range to select something
-jQuery.fn.selectText = function() {
-    var doc = document;
-    var element = this[0];
-    console.log(this, element);
-    if (doc.body.createTextRange) {
-        var range = document.body.createTextRange();
-        range.moveToElementText(element);
-        range.select();
-    } else if (window.getSelection) {
-        var selection = window.getSelection();
-        var range = document.createRange();
-        range.selectNodeContents(element);
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
-};
-// These are a highly specialized set of functions that allows dynamic modification of the match and score list tables. It also allows for the deletion of matches and scores
-$('#matchTab tbody').live('click', function() {
-    var thisTD = $(event.target).closest("td")
-    $(event.target).closest("td").toggleClass('select')
-    thisTD.attr('contenteditable', 'true')
-    var oldValue = thisTD.text();
-    var id = thisTD.attr('id');
-    var range = document.createRange();
-    var selection = window.getSelection();
-    range.selectNodeContents(document.getElementById(id));
-    selection.removeAllRanges();
-    selection.addRange(range);
-});
-$('#matchTab tbody').live('blur', function() {
-    var thisTD = $(event.target).closest("td")
-    $(event.target).closest("td").toggleClass('select')
-    thisTD.attr('contenteditable', 'false')
-    matchList = tableToArray('matches');
-    scoresList = tableToArray('scores');
-    fillInTeamNumbers('scoreCards', 'matchNumber', matchList);
-    scoresCSV = arrayCSV(scoresList);
-    matchesCSV = arrayCSV(matchList);
-    localStorage.currentTournament = tournamentName;
-    localStorage.localMatches = matchesCSV;
-    localStorage.localScores = scoresCSV;
-    return
-});
-$('#matchTab  tbody').live('contextmenu', function(e) {
-    var thisTD = $(event.target).closest("td");
-    e.preventDefault();
-    if (confirm("Remove Row")) {
-        thisTD.parent().remove();
-    }
-    matchList = tableToArray('matches');
-    scoresList = tableToArray('scores');
-    console.log(scoresList);
-    console.log(matchList);
-    scoresCSV = arrayCSV(scoresList);
-    matchesCSV = arrayCSV(matchList);
-    localStorage.currentTournament = tournamentName;
-    localStorage.localMatches = matchesCSV;
-    localStorage.localScores = scoresCSV;
-    return
-});
+/*==============================================================================
+*   Test Functions
+==============================================================================*/
 
-//
-function tabControl(tabGroup, navID, divID) {
-  $('.' + tabGroup).each(function(){
-    $(this).removeClass("active")
-  })
-  $('#' + navID).addClass("active")
-  $('#' + divID).addClass("active")
-}
+
 
 /*==============================================================================
 *   Modular Functions
@@ -127,10 +60,10 @@ function addNewRow(rowData, tableId) {
     var row = table.insertRow(-1);
     rowCount++;
     row.id = String(tableId + '_row' + rowCount);
-    for (i = 0; i < rowData.length; i++) {
-        cell = row.insertCell(i);
-        cell.id = String(tableId + '_row' + rowCount + '_cell' + i);
-        cell.innerHTML = rowData[i];
+    for (w = 0; w < rowData.length; w++) {
+        cell = row.insertCell(w);
+        cell.id = String(tableId + '_row' + rowCount + '_cell' + w);
+        cell.innerHTML = rowData[w];
     }
     console.log("Row Added to" + " " + tableId);
 }
@@ -166,6 +99,10 @@ function closeModal(modalId) {
     modal.style.display = "none"
 }
 
+Array.prototype.clone = function() {
+	return this.slice(0);
+};
+
 // Finds a value in a 2D array at a specified location
 function find2DArrayIndex(array, value, position) {
     for (i = 0; i < array.length; i++) {
@@ -177,6 +114,16 @@ function find2DArrayIndex(array, value, position) {
     if (value) {
         alert('No data exists for that value')
     }
+}
+
+// Finds the value in a 2D array at a specified location
+function find2DArrayValue(array, position) {
+    var newArray = [];
+    for (i = 0; i < array.length; i++) {
+        var sub = array[i];
+        newArray.push(sub[position])
+    }
+    return newArray;
 }
 
 //Just finds the value at a given index after performing very basic validation.
@@ -245,12 +192,12 @@ function importScoreList(csv, tableID) {
     localStorage.localScores = scoresCSV;
     localStorage.currentTournament = tournamentName;
     console.log("ScoreStorage:" + localStorage.localScores);
-    matchList = parseCSV(csv);
+    scoresList = parseCSV(csv);
     var i = 0;
-    console.log(matchList);
+    console.log(scoresList);
     $('#' + tableID + ' ' + 'tbody').empty();
-    while (i < matchList.length) {
-        addNewRow(matchList[i], tableID);
+    while (i < scoresList.length) {
+        addNewRow(scoresList[i], tableID);
         i++;
     }
 }
@@ -265,6 +212,15 @@ function parseCSV(string) {
     }
     console.log(array);
     return array;
+}
+
+//Takes the group class of all the tabs, the id of the active tab and the id of the corresponding content. After turning off all tabs it turns on the one seleccted
+function tabControl(tabGroup, navID, divID) {
+    $('.' + tabGroup).each(function() {
+        $(this).removeClass("active")
+    })
+    $('#' + navID).addClass("active")
+    $('#' + divID).addClass("active")
 }
 
 //takes an input a table and returns an array
@@ -286,7 +242,7 @@ function tableToArray(tableID) {
 
 /*==============================================================================
  *    Functions that load or are called on page load
- */
+==============================================================================*/
 //takes the name of a data list and fills it from the teamList array above
 function makeList(listId) {
     var list = document.getElementById(listId);
@@ -323,7 +279,7 @@ $(document).ready(function() {
 });
 /*==============================================================================
  *   Custom Functions called at other times
- */
+==============================================================================*/
 // called by fillInTeamNumbers, it validates input and provides useful debugging info
 function invalidIndexInput(array, value) {
 
@@ -381,3 +337,65 @@ function modalControl() {
         }
     }
 }
+
+//Created by someone else, creates a range to select something
+jQuery.fn.selectText = function() {
+    var doc = document;
+    var element = this[0];
+    console.log(this, element);
+    if (doc.body.createTextRange) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+    } else if (window.getSelection) {
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+};
+// These are a highly specialized set of functions that allows dynamic modification of the match and score list tables. It also allows for the deletion of matches and scores
+$('#matchTab tbody').live('click', function() {
+    var thisTD = $(event.target).closest("td")
+    $(event.target).closest("td").toggleClass('select')
+    thisTD.attr('contenteditable', 'true')
+    var oldValue = thisTD.text();
+    var id = thisTD.attr('id');
+    var range = document.createRange();
+    var selection = window.getSelection();
+    range.selectNodeContents(document.getElementById(id));
+    selection.removeAllRanges();
+    selection.addRange(range);
+});
+$('#matchTab tbody').live('blur', function() {
+    var thisTD = $(event.target).closest("td")
+    $(event.target).closest("td").toggleClass('select')
+    thisTD.attr('contenteditable', 'false')
+    matchList = tableToArray('matches');
+    scoresList = tableToArray('scores');
+    fillInTeamNumbers('scoreCards', 'matchNumber', matchList);
+    scoresCSV = arrayCSV(scoresList);
+    matchesCSV = arrayCSV(matchList);
+    localStorage.currentTournament = tournamentName;
+    localStorage.localMatches = matchesCSV;
+    localStorage.localScores = scoresCSV;
+    return
+});
+$(' tbody').live('contextmenu', function(e) {
+    var thisTD = $(event.target).closest("td");
+    e.preventDefault();
+    if (confirm("Remove Row")) {
+        thisTD.parent().remove();
+    }
+    matchList = tableToArray('matches');
+    scoresList = tableToArray('scores');
+    console.log(scoresList);
+    console.log(matchList);
+    scoresCSV = arrayCSV(scoresList);
+    matchesCSV = arrayCSV(matchList);
+    localStorage.currentTournament = tournamentName;
+    localStorage.localMatches = matchesCSV;
+    localStorage.localScores = scoresCSV;
+    return
+});
