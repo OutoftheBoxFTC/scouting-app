@@ -68,6 +68,17 @@ function addNewRow(rowData, tableId) {
     console.log("Row Added to" + " " + tableId);
 }
 
+//converts each array entry into a cell in a new row
+function arrayToTable(array, tableID) {
+    var table = document.getElementById(tableID).getElementsByTagName('tbody')[0];
+    for (w = 0; w < array.length; w++) {
+        var row = table.insertRow(-1);
+        rowCount++;
+        cell = row.insertCell(0);
+        cell.innerHTML = array[w];
+    }
+}
+
 //Takes the name of an input field and determines which ONE item is checked. Used for scoring. It will return a 0 if no item is checked.
 function checkedValue(inputName) {
     var value = $('input[name="' + inputName + '"]:checked').val();
@@ -91,6 +102,11 @@ function clearForm(formId) {
     $('#' + formId + ' ' + 'input[type=number], #' + formId + ' ' + 'input[type=text], #' + formId + ' ' + 'textarea').each(function() {
         this.value = null;
     });
+}
+
+//clears a table of everything in the table body using javascript
+function clearTable(tableID) {
+    $('#' + tableID + ' ' + 'tbody').empty();
 }
 
 //takes the id of a modal and then closes it. Could be replaced with jquerry
@@ -166,40 +182,76 @@ function handleFileSelect(evt) {
 
 //Couldn't get it to read the array through a parameter variable, so this was split in half. Takes a csv and table ID with a hardcoded array to update the score or match list
 function importMatchList(csv, tableID) {
-    if (!csv) {
-        return
-    }
-    matchesCSV = csv;
-    localStorage.localMatches = matchesCSV;
-    localStorage.currentTournament = tournamentName;
-    console.log("MatchStorage:" + localStorage.localMatches);
-    matchList = parseCSV(csv);
-    var array = matchList;
-    var i = 0;
-    console.log(matchList);
-    $('#' + tableID + ' ' + 'tbody').empty();
-    while (i < array.length) {
-        addNewRow(array[i], tableID);
-        i++;
+  if (!csv) {
+      return
+  }
+  matchesCSV = csv;
+  localStorage.localMatches = matchesCSV;
+  localStorage.currentTournament = tournamentName;
+  console.log("MatchStorage:" + localStorage.localMatches);
+  matchList = parseCSV(csv);
+  console.log(matchList);
+  for(i=0; i<matchList.length; i++){
+      addNewRow(matchList[i], tableID);
     }
 }
 //Couldn't get it to read the array through a parameter variable, so this was split in half. Takes a csv and table ID with a hardcoded array to update the score or match list
 function importScoreList(csv, tableID) {
-    if (!csv) {
-        return
+  if (!csv) {
+      return
+  }
+  scoresCSV = csv;
+  localStorage.localScores = scoresCSV;
+  localStorage.currentTournament = tournamentName;
+  console.log("ScoreStorage:" + localStorage.localScores);
+  scoresList = parseCSV(csv);
+  console.log(matchList);
+  for(i=0; i<scoresList.length; i++){
+    var pid=scoresList[i][0] + "_" + scoresList[i][1];
+    console.log(pid);
+    if (!scoreIDList.has(pid)){
+      scoreIDList.add(pid);
+      addNewRow(scoresList[i], tableID);
     }
-    scoresCSV = csv;
-    localStorage.localScores = scoresCSV;
-    localStorage.currentTournament = tournamentName;
-    console.log("ScoreStorage:" + localStorage.localScores);
-    scoresList = parseCSV(csv);
-    var i = 0;
-    console.log(scoresList);
-    $('#' + tableID + ' ' + 'tbody').empty();
-    while (i < scoresList.length) {
-        addNewRow(scoresList[i], tableID);
-        i++;
+    else {
+      console.log("That appears to be a duplicate entry and has been ignored");
     }
+  }
+}
+
+//takes an array of a map and returns the average of the array each eement in the value array
+function mapAverage(length, array) {
+    var avgArray = [];
+    var x = 0; // x is the total value so far
+    var y = 0; //y is the value added to x
+    for (i = 0; i < length; i++) { //iterates through each value within the
+        for (n = 0; n < array.length; n++) {
+            y = array[n][1][i]
+            x = parseFloat(x) + parseFloat(y);
+        }
+        x = x / n; // get average
+        x = Math.round(x * 100)/100; // round average two places
+        avgArray.push(x); //push into array
+        x = 0; // reset x
+        y = 0; //reset y
+    }
+    return avgArray
+}
+
+//turns score list array into a map by team
+function mapTeamScores(teamNumbers, teamScores) {
+    var map = new Map();
+    for (n = 0; n < teamNumbers.length; n++) {
+        var newMap = new Map();
+        for (i = 0; i < teamScores.length; i++) {
+            var sub = teamScores[i];
+            if (teamNumbers[n] == sub[0]) {
+                newMap.set(sub[1], sub.splice(1, sub.length))
+            }
+        }
+        map.set(teamNumbers[n], newMap)
+    }
+    return map
 }
 
 //Takes an input of the CSV string data and parses it into an array
@@ -212,6 +264,17 @@ function parseCSV(string) {
     }
     console.log(array);
     return array;
+}
+
+
+// returns a sum of an array column derived from a map. The first value, q, is the first row, the p1 selects the value from the key, value pair and p2 selects the positon within the inner array.
+function sumMapValue(array, p1, p2) {
+  var x = 0;
+  console.log(array);
+  for(q=0;q<array.length; q++){
+    x = parseFloat(array[q][p1][p2]) + x
+  }
+return x;
 }
 
 //Takes the group class of all the tabs, the id of the active tab and the id of the corresponding content. After turning off all tabs it turns on the one seleccted
@@ -240,6 +303,20 @@ function tableToArray(tableID) {
     return array;
 }
 
+//given an array of values and the position of the team numbers in that array, this returns an array of unique team numbers
+function uniqueTeamList(array, position) {
+    var set = new Set();
+    var teamNumbers = find2DArrayValue(array, position);
+    for (i = 0; i < array.length; i++) {
+        set.add(teamNumbers[i])
+    }
+    teamNumbers = [...set];
+    teamNumbers = teamNumbers.sort(function(a, b) {
+        return a - b;
+    });
+    return teamNumbers
+}
+
 /*==============================================================================
  *    Functions that load or are called on page load
 ==============================================================================*/
@@ -257,7 +334,19 @@ function fileUpload() {
     document.getElementById('files').addEventListener('change', handleFileSelect, false);
 }
 
-
+//function that takes all score data and sorts it by team.
+function getData(tableID, scoreArray) {
+    clearTable(tableID);
+    matchList = tableToArray('matches');
+    scoresList = tableToArray('scores');
+    var teamList = uniqueTeamList(scoreArray, 0);
+    teamMatches = mapTeamScores(teamList, scoreArray);
+    arrayToTable(teamList, tableID)
+        //for (i=0;i<teamList.length; i++){
+    console.log(teamList);
+    //addNewRow(teamList[i],tableID)
+    //}
+}
 
 //controls the load old match content modal window
 $(document).ready(function() {
@@ -338,6 +427,71 @@ function modalControl() {
     }
 }
 
+//given a team number, it checks to see if the team exists in the team list set then changes the header to reflect the team chosen and populates the table based on the team picked.
+function pullMatchData(value, tableID) {
+    var team;
+    var score;
+    clearTable(tableID);
+    document.getElementById("teamHeader").innerHTML = "";
+    if (teamMatches.get(value)) {
+        team = teamMatches.get(value);
+        score = [...team];
+        document.getElementById("teamHeader").innerHTML = "Overview of Team #" + " " + value;
+        for (n = 0; n < score.length; n++) {
+          qualifyingPoints(score[n][1]);
+            addNewRow(score[n][1], tableID);
+        }
+        var average = mapAverage(score[0][1].length -1, score);
+        qp = sumMapValue(score, 1, 1);
+        average.splice(0,2,"Average",qp);
+        average.push("")
+        addNewRow(average, tableID);
+    } else {
+        document.getElementById("teamHeader").innerHTML = "Team Not Found";
+    }
+}
+
+//given the score array for a single match it determines if the team won, and what alliance they were on. It removes the unnecessary alliance score and swaps in QP instead of alliance.
+function qualifyingPoints(array) {
+  var redScore = array[3];
+  var blueScore = array[2];
+  var alliance = array [1];
+  var check = array[13];
+  var winner;
+  var qp = 0;
+  var rp = 0;
+  if (redScore > blueScore){
+    winner = "red"
+  }
+  else if (redScore < blueScore){
+    winner = "blue"
+  }
+  else if (redScore == blueScore) {
+    winner = "tie"
+  }
+  if (winner == alliance){
+    qp = 2;
+  }
+  else if(winner == "tie"){
+    qp = 1;
+  }
+  else {
+    qp = 0;
+  }
+  if (array.length > 14){
+    array.splice(1,1, qp)
+    if (alliance == "red"){//if red alliance and not yet spliced
+      array.splice(2,1);
+      console.log("spliced!");
+    }
+    else if (alliance == "blue"){//if blue alliance and not yet spliced
+      array.splice(3,1)
+      console.log("spliced!");
+    }
+  }
+
+}
+
 //Created by someone else, creates a range to select something
 jQuery.fn.selectText = function() {
     var doc = document;
@@ -382,7 +536,7 @@ $('#matchTab tbody').live('blur', function() {
     localStorage.localScores = scoresCSV;
     return
 });
-$(' tbody').live('contextmenu', function(e) {
+$('#matchTab tbody').live('contextmenu', function(e) {
     var thisTD = $(event.target).closest("td");
     e.preventDefault();
     if (confirm("Remove Row")) {
@@ -398,4 +552,10 @@ $(' tbody').live('contextmenu', function(e) {
     localStorage.localMatches = matchesCSV;
     localStorage.localScores = scoresCSV;
     return
+});
+
+$('#teamListNav').live('click', function() {
+    var thisTD = $(event.target).closest("td");
+    var value = thisTD.text();
+    pullMatchData(value, 'teamDataTable')
 });

@@ -55,8 +55,8 @@
                 </p>
                 <center>
                     <div>
-                        <button class="button none " onclick="downloadCSV('score', scoresCSV);closeModal('exportScores')">Scores</button>
-                        <button class="button none " onclick="downloadCSV('match', matchesCSV);closeModal('exportScores')">Matches</button>
+                        <button class="button none " onclick="downloadCSV('match_results', scoresCSV);closeModal('exportScores')">Match Results</button>
+                        <button class="button none " onclick="downloadCSV('match_list', matchesCSV);closeModal('exportScores')">Match List</button>
                     </div>
                 </center>
             </div>
@@ -78,7 +78,7 @@
                     <input accept=".csv" type="file" id="files" name="files[]" />
                     <output id="list"></output>
                     <div>
-                        <button class="button blue" onclick="importScoreList(uploadedFile, 'scores'); closeModal('importScores')">Upload Scores</button>
+                        <button class="button blue" onclick="importScoreList(uploadedFile, 'scores'); closeModal('importScores')">Upload Match Results</button>
                         <button class="button accent" onclick="importMatchList(uploadedFile, 'matches'); closeModal('importScores')">Upload Match List</button>
                     </div>
                 </center>
@@ -128,11 +128,11 @@
     </div>
     <div class="dropshadow tabs" id="contentContainer">
         <div class="tabs nav">
-            <div id="matchNav" class="tabs nav link  contentTabs" onclick="tabControl('contentTabs', 'matchNav', 'matchTab')">Matches</div>
-            <div id="teamNav" class="tabs nav link active contentTabs" onclick="tabControl('contentTabs', 'teamNav', 'teamTab'); getData()">Teams</div>
+            <div id="matchNav" class="tabs nav link active contentTabs" onclick="tabControl('contentTabs', 'matchNav', 'matchTab')">Matches</div>
+            <div id="teamNav" class="tabs nav link  contentTabs" onclick="tabControl('contentTabs', 'teamNav', 'teamTab'); getData('teamListNav', scoresList)">Teams</div>
             <div id="overviewNav" class="tabs nav link contentTabs" onclick="tabControl('contentTabs', 'overviewNav', 'overviewTab')">Overview</div>
         </div>
-        <div id="matchTab" class="tabs content  contentTabs">
+        <div id="matchTab" class="tabs content active contentTabs">
             <div id="scoreCards" class="right">
                 <form id="red_1" class="player dropshadow redAlliance">
                     <div class="teamInfo material">
@@ -998,70 +998,79 @@
             </div>
             <div class="clear"></div>
         </div>
-        <div id="teamTab" class="tabs content active contentTabs">
-          <table id="teamListNav">
-            <tbody>
-
-            </tbody>
-          </table>
-          <button class="button red" onclick="getData()">Refresh Data</button>
-            <button class="button blue" onclick="myFunction('teamDataTable')">Test</button>
-
-            <h1 id="teamHeader"></h1>
-            <table id="teamDataTable">
+        <div id="teamTab" class="tabs content  contentTabs">
+          <div class="full ">
+            <h1 id="teamHeader">Team Overview</h1>
+          </div>
+          <div class="sixth left">
+            <table id="teamListNav">
               <thead>
                 <tr>
-                    <th>
-                        Match Number
-                    </th>
-                    <th>
-                        Alliance
-                    </th>
-                    <th>
-                        Blue Score
-                    </th>
-                    <th>
-                        Red Score
-                    </th>
-                    <th>
-                        Auto Beacon
-                    </th>
-                    <th>
-                        Particles Center
-                    </th>
-                    <th>
-                        Particles Corner
-                    </th>
-                    <th>
-                        Cap Ball
-                    </th>
-                    <th>
-                        Parking
-                    </th>
-                    <th>
-                        Teli-Op Beacons
-                    </th>
-                    <th>
-                        Particles Center
-                    </th>
-                    <th>
-                        Particles Corner
-                    </th>
-                    <th>
-                        Cap Ball
-                    </th>
-                    <th>
-                        Scout Score
-                    </th>
-                    <th>
-                        Scout Notes
-                    </th>
+                  <th>
+                    <br />
+                    All Teams
+                  </th>
+                </tr>
               </thead>
               <tbody>
 
               </tbody>
-
             </table>
+          </div>
+            <div id="" class = "fiveSixth left">
+              <table id="teamDataTable" class="full">
+                <thead>
+                  <tr>
+                      <th>
+                          Match Number
+                      </th>
+                      <th>
+                          Qualifying Points
+                      </th>
+                      <th>
+                          Alliance Score
+                      </th>
+                      <th>
+                          Auto Beacon
+                      </th>
+                      <th>
+                          Particles Center
+                      </th>
+                      <th>
+                          Particles Corner
+                      </th>
+                      <th>
+                          Cap Ball
+                      </th>
+                      <th>
+                          Parking
+                      </th>
+                      <th>
+                          Teli-Op Beacons
+                      </th>
+                      <th>
+                          Particles Center
+                      </th>
+                      <th>
+                          Particles Corner
+                      </th>
+                      <th>
+                          Cap Ball
+                      </th>
+                      <th>
+                          Scout Score
+                      </th>
+                      <th>
+                          Scout Notes
+                      </th>
+                </thead>
+                <tbody>
+
+                </tbody>
+
+              </table>
+            </div>
+            <div class="clear"></div>
         </div>
         <div id="overviewTab" class="tabs content contentTabs">
             <div class="tabs body">
