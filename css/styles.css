@@ -34,13 +34,14 @@
 .contain{object-fit:contain;}
 .select {border-bottom: 2px solid black}
 /* Page Styles */
-body {font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif}
+body {font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif; font-size: 12px;}
 html {
     overflow: -moz-scrollbars-vertical;
     overflow-y: scroll;
 }
 h2 {font-size: 16px;
   font-weight: bolder;}
+h4{font-weight: bold;}
 .button {
   border:none;
   text-align: center;
@@ -118,6 +119,21 @@ td {max-width:20%;
 
 tbody tr:hover {background: #E0E0E0;}
 
+.footnote { border-top: 1px solid #ccc;
+	margin:auto;
+	margin-top: 10%;
+	padding:0 5%;
+	width: 65%}
+
+.note{
+	text-align: justify;
+	font-size: 10px;
+	}
+
+	.note span {font-weight: bold;color: #333}
+	.footnote div {
+		width:45%;
+	}
 #scores td:last-of-type{text-align: left}
 
 /* Table Button Styles */
@@ -169,6 +185,7 @@ tbody ::selection { background: white; }
 	text-align: left;
 }
 
+.footnote div{margin:1%;}
 
 ::-webkit-scrollbar {
 	width: 12px
