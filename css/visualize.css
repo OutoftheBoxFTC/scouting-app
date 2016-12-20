@@ -1,4 +1,4 @@
-.chart div {background: #eee;
+.chart div {background: #aaa;
     padding: 10px;
     margin-top: 2px;
     transform: rotate(0deg);
@@ -8,3 +8,22 @@
   background: #333;
   color: #EEE;;
   }
+
+.svgChart rect{
+  fill: slateblue;
+}
+
+.svgChart text {
+  fill: black;
+  font: 12px sans-serif;
+  text-anchor: end;
+}
+
+.svgChart rect:hover {
+  fill: royalblue;
+}
+
+.chart {background: #fff;
+  width: 98%;
+  height:300px;
+}

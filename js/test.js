@@ -1,5 +1,5 @@
-var elements = ['Auto Beacon', 'Particles (center)', 'Particles (corner)', 'Cap Ball (auto)', 'Parking', 'Teli-Op Beacons', 'Particles (center)', 'Particles (corner)', 'Cap Ball (end game)'];
-var data = [1, 0, 1, 0, 0, 2, 0, 0, 0];
+var elements = ['Auto Beacon', 'Auto Part. (high)', 'Auto Part. (low)', 'Auto Cap Ball', 'Auto Park', 'Teli Beacons', 'Particles (high)', 'Particles (low)', 'Cap Ball'];
+var scores = [2, 1, 0, 0, 0, 2, 0, 0, 0];
 
 //takes two arrays and two names and returns array of objects containing properties with the values from the arrays
 function objectArray(array1, array2, type1, type2) {
@@ -16,36 +16,73 @@ function objectArray(array1, array2, type1, type2) {
     return array
 }
 
-function makeChart() {
-$( ".chart" ).empty(); //clears chart so it can be redrawn
 
-var x = d3.scaleLinear()
-    .domain([0, 10])//number of divisions
-    .range([0, 120]);//max size in px
-d3.select(".chart")
-  .selectAll("div") //we want divs for our bars
-    .data(data) //sets the chart data to the array data
-  .enter().append("div") //adds the new divs to the chart element
-    .style("width", function(d) {return x(d) + "px";})//set width
-    .text(function(d){return d;})
-//barEnter.style("height", function(d) { return d * 20 +20 + "px"; });
+function makeAChart() {
+  $( "#svg1" ).empty();
 
+  var data = objectArray (elements, scores, 'element', 'score');
 
-}
+  var margin = {top: 20, right: 30, bottom: 100, left: 40},
+    width = $('.chart').width() - margin.left - margin.right,
+    height = 400 -margin.top -margin.bottom,
+    barWidth = width / data.length;
 
-/*
-function makeChart() {
-    var array = objectArray(elements, data, 'element', 'score');
-    $( ".chart" ).empty();
-    d3.select(".chart")
-  .selectAll("div")
+  var x = d3.scaleBand()
+    .rangeRound([0, width])
+    .padding(0.1)
+    .domain(data.map(function(d) { return d.element; }));
+
+  var y = d3.scaleLinear()
+    .range([height, 0])
+    .domain([0, 10]);
+
+  var chart = d3.select(".svgChart")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height  + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var bar = chart.selectAll("g")
     .data(data)
-  .enter().append("div")
-    .style("height", function(d) { return d * 10 + 10 + "px"; })
-    .text(function(d) { return d; });
+    .enter().append("g")
+    .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+
+  bar.append("rect")
+    .attr("y", function(d) { return y(d.score); })
+    .attr("height", function(d) { return height - y(d.score); })
+    .attr("width", barWidth - 1);
+
+  bar.append("text")
+    .attr("x", barWidth / 2)
+    .attr("y", function(d) { return y(d.score) - 13; })
+    .attr("dy", ".75em")
+    .text(function(d) { return d.score; });
+
+  // Add the x Axis
+  chart.append("g")
+  .attr("class", "y-axis")
+  .call(d3.axisLeft(y));
+
+  chart.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", function(d) {
+                return "rotate(-65)"
+                });
+
+  chart.selectAll(".x-axis text")  // select all the text elements for the xaxis
+          .attr("transform", function(d) {
+             return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
+             });
 }
-*/
-function changeChart() {
+
+
+function changeChart(data) {
   for (i=0; i <data.length; i++){
     var n = Math.floor((Math.random() * 4) + 1);
     if (data[i] > 4){

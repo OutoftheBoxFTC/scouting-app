@@ -15,13 +15,11 @@
     <script src="js/test.js"></script>
 </head>
 
-<body onload="makeChart()">
-<div id="graphs">
+<body onload="makeAChart()">
   <div class="chart">
-<svg></svg>
+<svg class="svgChart" id="svg1"></svg>
   </div>
-</div>
-  <button onclick=" changeChart(); makeChart()">Click</button>
+  <button onclick=" changeChart(scores); makeAChart()">Click</button>
 </body>
 
 </html>
