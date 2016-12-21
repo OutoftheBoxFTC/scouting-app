@@ -1,7 +1,7 @@
 @media (max-width : 1400px) and (min-width : 1000px) {
 	#scoreCards{width:99%}
 	#matchList {width:30%;
-		margin-top:23px;}
+		margin-top:23px; }
 	#scoresList{ width: 69%;
 		overflow:auto;
 		margin: 10px 0% 0% 1%;}
@@ -21,6 +21,7 @@
 #navBar .button{padding: 10px}
 #matchList {width:30%;
 margin-top:30px;}
+#scores{max-height:250px;}
 #scoresList{ width: 69%;
 	overflow:auto;
 	margin: 20px 0% 0px 1%;}

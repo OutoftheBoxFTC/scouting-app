@@ -23,6 +23,8 @@
 .dark {color:#616161}
 .light {color: #EEEEEE;}
 .full {width: 100%;}
+.fiveSixth {width: 83%}
+.threeQuarter {width: 75%}
 .half {width: 50%;}
 .third {width:33.33%;}
 .quarter {width:25%}
@@ -32,13 +34,14 @@
 .contain{object-fit:contain;}
 .select {border-bottom: 2px solid black}
 /* Page Styles */
-body {font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif}
+body {font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif; font-size: 12px;}
 html {
     overflow: -moz-scrollbars-vertical;
     overflow-y: scroll;
 }
 h2 {font-size: 16px;
   font-weight: bolder;}
+h4{font-weight: bold;}
 .button {
   border:none;
   text-align: center;
@@ -99,7 +102,9 @@ height: 100%;}
   top:0px;
 	overflow: auto;}
 
-table {width: 95%;}
+table {width: 95%;
+	color: #424242;
+}
 th {font-size: 12px;
   font-weight: lighter;
   padding: 10px 5px;
@@ -109,11 +114,21 @@ td {max-width:20%;
   padding: 10px 3px;
   border-bottom: 1px solid #EEEEEE;
   font-size: 12px;
-  color: #424242;
   text-align: center;
 	white-space: nowrap;}
 
 tbody tr:hover {background: #E0E0E0;}
+
+.footnote { border-top: 1px solid #ccc;
+	margin:auto;
+	margin-top: 10%;
+	padding:0 5%;
+	width: 100%}
+
+.note{
+	text-align: justify;
+	font-size: 10px;
+	}
 
 #scores td:last-of-type{text-align: left}
 
@@ -133,6 +148,8 @@ tbody tr:hover {background: #E0E0E0;}
   font-size: 10px;
 }
 
+#teamDataTable {overflow:auto; display: block;}
+
 .player {width: 49%;
   height:auto;
   float:left;
@@ -147,3 +164,63 @@ tbody tr:hover {background: #E0E0E0;}
   }
 * {outline:none;}
 tbody ::selection { background: white; }
+
+#teamDataTable td:nth-child(4), #teamDataTable td:nth-child(9), #teamDataTable td:nth-child(13), #teamDataTable td:nth-child(14){border-left: 1.5px solid #000}
+
+#teamDataTable tbody tr:last-of-type {
+	border-top:2px solid black;
+	background-color: #CFD8DC;
+	color: #263238;
+	text-transform: uppercase;
+}
+
+#teamDataTable th {
+	word-spacing: 2000px;
+}
+#teamDataTable td:last-of-type, #teamDataTable th:last-of-type{
+	text-align: left;
+}
+
+.footnote div{margin:1%;}
+
+::-webkit-scrollbar {
+	width: 12px
+}
+::-webkit-scrollbar-thumb {
+	border-width: 1px 1px 1px 2px
+}
+::-webkit-scrollbar-track {
+	border-width: 0
+}
+::-webkit-scrollbar {
+	height: 10px;
+	overflow: visible;
+	width: 10px;
+}
+::-webkit-scrollbar-button {
+	height: 0;
+	width: 0;
+}
+::-webkit-scrollbar-track {
+	background-clip: padding-box;
+	border: solid transparent;
+	border-width: 0 0 0 4px;
+}
+::-webkit-scrollbar-thumb {
+	background-color: rgba(158, 158, 158, .5);
+	background-clip: padding-box;
+	border: solid transparent;
+	border-width: 1px 1px 1px 6px;
+	min-height: 28px;
+	padding: 100px 0 0;
+	box-shadow: inset 1px 1px 0 rgba(158, 158, 158, .1), inset 0 -1px 0 rgba(158, 158, 158, .07);
+}
+::-webkit-scrollbar-thumb:horizontal {
+	border-width: 6px 1px 1px;
+	padding: 0 0 0 100px;
+	box-shadow: inset 1px 1px 0 rgba(2158, 158, 158, .1), inset -1px 0 0 rgba(158, 158, 158, .07);
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(158, 158, 158, .9);
+	box-shadow: inset 1px 1px 1px rgba(158, 158, 158 .25);
+}
