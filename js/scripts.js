@@ -21,17 +21,16 @@ var debug = 0; //used for debugging
 ==============================================================================*/
 teamList = [6700, 8297];
 tournamentName = "Northern Regional"
-/*==============================================================================
-*   Test Functions
-==============================================================================*/
-var elements = ['Auto Beacon', 'Auto Part. (high)', 'Auto Part. (low)', 'Auto Cap Ball', 'Auto Park', 'Teli Beacons', 'Particles (high)', 'Particles (low)', 'Cap Ball'];
+    /*==============================================================================
+    *   Test Functions
+    ==============================================================================*/
+var elements = ['Auto Beacon', 'Auto Particles (Center)', 'Auto Particles (Corner)', 'Auto Cap Ball', 'Auto Park', 'Teli-Op Beacons', 'Teli-Op Particles (Center)', 'Teli-Op Particles (Corner)', 'Cap Ball (Lift)'];
 var scores = [2, 1, 0, 0, 0, 2, 0, 0, 0];
 
 //takes two arrays and two names and returns array of objects containing properties with the values from the arrays
 function objectArray(array1, array2, type1, type2) {
     var array = [];
     var length = Math.min(array1.length, array2.length)
-
     for (q = 0; q < length; q++) {
         var obj = {};
         obj[type1] = array1[q];
@@ -42,77 +41,99 @@ function objectArray(array1, array2, type1, type2) {
     return array
 }
 
-function makeChart() {
-  $( "#svg1" ).empty();
+function makeChart(data) {
+    $("#svg1").empty();
+    var margin = {
+            top: 20,
+            right: 20,
+            bottom: 50,
+            left: 20
+        },
+        width = $('.chart').width() - margin.left - margin.right,
+        height = $('.chart').height() - margin.top - margin.bottom,
+        barWidth = width / data.length;
 
-  var data = objectArray (elements, scores, 'element', 'score');
+    var x = d3.scaleBand()
+        .rangeRound([0, width])
+        .padding(0.1)
+        .domain([1, 2, 3, 4, 5, 6, 7, 8, 9]
+            /*data.map(function(d) {
+                        return d.element;
+                    })*/
+        );
 
-  var margin = {top: 20, right: 30, bottom: 70, left: 40},
-    width = $('.chart').width() - margin.left - margin.right,
-    height = $('.chart').height() -margin.top -margin.bottom,
-    barWidth = width / data.length;
+    var y = d3.scaleLinear()
+        .range([height, 0])
+        .domain([0, 10]);
 
-  var x = d3.scaleBand()
-    .rangeRound([0, width])
-    .padding(0.1)
-    .domain(data.map(function(d) { return d.element; }));
-
-  var y = d3.scaleLinear()
-    .range([height, 0])
-    .domain([0, 10]);
-
-  var chart = d3.select(".svgChart")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height  + margin.top + margin.bottom)
-    .append("g")
+    var chart = d3.select(".svgChart")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  var bar = chart.selectAll("g")
-    .data(data)
-    .enter().append("g")
-    .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+    var tool_tip = d3.tip()
+        .attr("class", "d3-tip")
+        .offset([-8, 0])
+        .html(function(d) {
+            return "" + d.element + ":" + " " + d.score;
+        });
+    chart.call(tool_tip);
 
-  bar.append("rect")
-    .attr("y", function(d) { return y(d.score); })
-    .attr("height", function(d) { return height - y(d.score); })
-    .attr("width", barWidth - 1);
+    var bar = chart.selectAll("g")
+        .data(data)
+        .enter().append("g")
+        .attr("transform", function(d, i) {
+            return "translate(" + i * barWidth + ",0)";
+        })
+        .on('mouseover', tool_tip.show)
+        .on('mouseout', tool_tip.hide);
 
-  bar.append("text")
-    .attr("x", barWidth / 2)
-    .attr("y", function(d) { return y(d.score) - 13; })
-    .attr("dy", ".75em")
-    .text(function(d) { return d.score; });
+    bar.append("rect")
+        .attr("y", height)
+        .attr("width", barWidth - 1)
+
+    .attr("height", 0)
+        .transition()
+        .duration(500) // Also NEW
+        .attr("y", function(d) {
+            return y(d.score);
+        })
+        .attr("height", function(d) {
+            return height - y(d.score);
+        });
+
 
     // Add the y Axis
     chart.append("g")
-    .attr("class", "y-axis")
-    .call(d3.axisLeft(y));
+        .attr("class", "y-axis")
+        .call(d3.axisLeft(y).ticks(5).tickSize(0));
 
-  // Add the x Axis
-  chart.append("g")
-  .attr("class", "y-axis")
-  .call(d3.axisLeft(y).tickValues(5));
-
-  chart.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x))
-      .selectAll("text")
-            .style("text-anchor", "end")
-            .attr("dx", "-.8em")
-            .attr("dy", ".15em")
-            .attr("transform", function(d) {
-                return "rotate(-35)"
-                });
-
-  chart.selectAll(".x-axis text")  // select all the text elements for the xaxis
-          .attr("transform", function(d) {
-             return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
-             });
+    // Add the x Axis
+    chart.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).tickSize(0))
+        .selectAll("text")
+        .style("text-anchor", "end")
+        //.style("display", "none");
 }
 
-
-
+function mapSum(length, array) {
+    var sumArray = [];
+    var x = 0; // x is the total value so far
+    var y = 0; //y is the value added to x
+    for (i = 0; i < length; i++) { //iterates through each value within the
+        for (n = 0; n < array.length; n++) {
+            y = array[n][1][i]
+            x = parseFloat(x) + parseFloat(y);
+        }
+        sumArray.push(x); //push into array
+        x = 0; // reset x
+        y = 0; //reset y
+    }
+    return sumArray
+}
 /*==============================================================================
 *   Modular Functions
 ==============================================================================*/
@@ -202,7 +223,7 @@ function closeModal(modalId) {
 }
 
 Array.prototype.clone = function() {
-	return this.slice(0);
+    return this.slice(0);
 };
 
 // Finds a value in a 2D array at a specified location
@@ -268,41 +289,40 @@ function handleFileSelect(evt) {
 
 //Couldn't get it to read the array through a parameter variable, so this was split in half. Takes a csv and table ID with a hardcoded array to update the score or match list
 function importMatchList(csv, tableID) {
-  if (!csv) {
-      return
-  }
-  matchesCSV = csv;
-  localStorage.localMatches = matchesCSV;
-  localStorage.currentTournament = tournamentName;
-  console.log("MatchStorage:" + localStorage.localMatches);
-  matchList = parseCSV(csv);
-  console.log(matchList);
-  for(i=0; i<matchList.length; i++){
-      addNewRow(matchList[i], tableID);
+    if (!csv) {
+        return
+    }
+    matchesCSV = csv;
+    localStorage.localMatches = matchesCSV;
+    localStorage.currentTournament = tournamentName;
+    console.log("MatchStorage:" + localStorage.localMatches);
+    matchList = parseCSV(csv);
+    console.log(matchList);
+    for (i = 0; i < matchList.length; i++) {
+        addNewRow(matchList[i], tableID);
     }
 }
 //Couldn't get it to read the array through a parameter variable, so this was split in half. Takes a csv and table ID with a hardcoded array to update the score or match list
 function importScoreList(csv, tableID) {
-  if (!csv) {
-      return
-  }
-  scoresCSV = csv;
-  localStorage.localScores = scoresCSV;
-  localStorage.currentTournament = tournamentName;
-  console.log("ScoreStorage:" + localStorage.localScores);
-  scoresList = parseCSV(csv);
-  console.log(matchList);
-  for(i=0; i<scoresList.length; i++){
-    var pid=scoresList[i][0] + "_" + scoresList[i][1];
-    console.log(pid);
-    if (!scoreIDList.has(pid)){
-      scoreIDList.add(pid);
-      addNewRow(scoresList[i], tableID);
+    if (!csv) {
+        return
     }
-    else {
-      console.log("That appears to be a duplicate entry and has been ignored");
+    scoresCSV = csv;
+    localStorage.localScores = scoresCSV;
+    localStorage.currentTournament = tournamentName;
+    console.log("ScoreStorage:" + localStorage.localScores);
+    scoresList = parseCSV(csv);
+    console.log(matchList);
+    for (i = 0; i < scoresList.length; i++) {
+        var pid = scoresList[i][0] + "_" + scoresList[i][1];
+        console.log(pid);
+        if (!scoreIDList.has(pid)) {
+            scoreIDList.add(pid);
+            addNewRow(scoresList[i], tableID);
+        } else {
+            console.log("That appears to be a duplicate entry and has been ignored");
+        }
     }
-  }
 }
 
 //takes an array of a map and returns the average of the array each eement in the value array
@@ -316,7 +336,7 @@ function mapAverage(length, array) {
             x = parseFloat(x) + parseFloat(y);
         }
         x = x / n; // get average
-        x = Math.round(x * 100)/100; // round average two places
+        x = Math.round(x * 100) / 100; // round average two places
         avgArray.push(x); //push into array
         x = 0; // reset x
         y = 0; //reset y
@@ -355,12 +375,12 @@ function parseCSV(string) {
 
 // returns a sum of an array column derived from a map. The first value, q, is the first row, the p1 selects the value from the key, value pair and p2 selects the positon within the inner array.
 function sumMapValue(array, p1, p2) {
-  var x = 0;
-  console.log(array);
-  for(q=0;q<array.length; q++){
-    x = parseFloat(array[q][p1][p2]) + x
-  }
-return x;
+    var x = 0;
+    console.log(array);
+    for (q = 0; q < array.length; q++) {
+        x = parseFloat(array[q][p1][p2]) + x
+    }
+    return x;
 }
 
 //Takes the group class of all the tabs, the id of the active tab and the id of the corresponding content. After turning off all tabs it turns on the one seleccted
@@ -517,7 +537,7 @@ function modalControl() {
 function pullMatchData(value, tableID) {
     var team;
     var score;
-    makeChart()
+    $('#analytics').css("visibility", "visible")
     clearTable(tableID);
     document.getElementById("teamHeader").innerHTML = "";
     if (teamMatches.get(value)) {
@@ -525,12 +545,18 @@ function pullMatchData(value, tableID) {
         score = [...team];
         document.getElementById("teamHeader").innerHTML = "Overview of Team #" + " " + value;
         for (n = 0; n < score.length; n++) {
-          qualifyingPoints(score[n][1]);
+            qualifyingPoints(score[n][1]);
             addNewRow(score[n][1], tableID);
         }
-        var average = mapAverage(score[0][1].length -1, score);
+        var scoreSum = mapSum(score[0][1].length - 1, score);
+        scoreSum.splice(0, 3);
+        scoreSum.splice(9, 1);
+        console.log(scoreSum);
+        var data = objectArray(elements, scoreSum, 'element', 'score');
+        makeChart(data);
+        var average = mapAverage(score[0][1].length - 1, score);
         qp = sumMapValue(score, 1, 1);
-        average.splice(0,2,"Average",qp);
+        average.splice(0, 2, "Average", qp);
         average.push("")
         addNewRow(average, tableID);
     } else {
@@ -540,42 +566,35 @@ function pullMatchData(value, tableID) {
 
 //given the score array for a single match it determines if the team won, and what alliance they were on. It removes the unnecessary alliance score and swaps in QP instead of alliance.
 function qualifyingPoints(array) {
-  var redScore = array[3];
-  var blueScore = array[2];
-  var alliance = array [1];
-  var check = array[13];
-  var winner;
-  var qp = 0;
-  var rp = 0;
-  if (redScore > blueScore){
-    winner = "red"
-  }
-  else if (redScore < blueScore){
-    winner = "blue"
-  }
-  else if (redScore == blueScore) {
-    winner = "tie"
-  }
-  if (winner == alliance){
-    qp = 2;
-  }
-  else if(winner == "tie"){
-    qp = 1;
-  }
-  else {
-    qp = 0;
-  }
-  if (array.length > 14){
-    array.splice(1,1, qp)
-    if (alliance == "red"){//if red alliance and not yet spliced
-      array.splice(2,1);
-      console.log("spliced!");
+    var redScore = array[3];
+    var blueScore = array[2];
+    var alliance = array[1];
+    var check = array[13];
+    var winner;
+    var qp = 0;
+    var rp = 0;
+    if (parseFloat(redScore) > parseFloat(blueScore)) {
+        winner = "red"
+    } else if (parseFloat(redScore) < parseFloat(blueScore)) {
+        winner = "blue"
+    } else if (parseFloat(redScore) == parseFloat(blueScore)) {
+        winner = "tie"
     }
-    else if (alliance == "blue"){//if blue alliance and not yet spliced
-      array.splice(3,1)
-      console.log("spliced!");
+    if (winner == alliance) {
+        qp = 2;
+    } else if (winner == "tie") {
+        qp = 1;
+    } else {
+        qp = 0;
     }
-  }
+    if (array.length > 14) {
+        array.splice(1, 1, qp)
+        if (alliance == "red") { //if red alliance and not yet spliced
+            array.splice(2, 1);
+        } else if (alliance == "blue") { //if blue alliance and not yet spliced
+            array.splice(3, 1)
+        }
+    }
 
 }
 

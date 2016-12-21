@@ -1,29 +1,68 @@
-.chart div {background: #aaa;
-    padding: 10px;
-    margin-top: 2px;
-    transform: rotate(0deg);
-  	transform-origin: left top 600;}
-
-.chart div:hover {
-  background: #333;
-  color: #EEE;;
-  }
-
-.svgChart rect{
-  fill: slateblue;
-}
-
 .svgChart text {
-  fill: black;
-  font: 12px sans-serif;
-  text-anchor: end;
+    font: 12px sans-serif;
+    text-anchor: end;
 }
 
-.svgChart rect:hover {
-  fill: royalblue;
+.chart {
+    background: #fff;
+    width: 70%;
+    height: 200px;
 }
 
-.chart {background: #fff;
-  width: 98%;
-  height:300px;
+#analytics {
+  margin: 20px auto;
+    visibility: hidden;
 }
+.x-axis path {
+    stroke-width: 3;
+}
+
+.y-axis line, .y-axis path, .x-axis path {
+      stroke: #aaa;
+}
+
+.d3-tip {
+  line-height: 1;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+.box{width:20px;
+height:20px;
+display: inline-block;}
+
+.legend{display:block;
+  margin:5px;}
+.legend::first-letter{font-weight: bold;}
+
+g:nth-child(1) rect{fill:#81D4FA;}
+g:nth-child(2) rect{fill:#4FC3F7;}
+g:nth-child(3) rect{fill:#29B6F6;}
+g:nth-child(4) rect{fill:#03A9F4;}
+g:nth-child(5) rect{fill:#039BE5;}
+g:nth-child(6) rect{fill:#E0E0E0;}
+g:nth-child(7) rect{fill:#BDBDBD;}
+g:nth-child(8) rect{fill:#9E9E9E;}
+g:nth-child(9) rect{fill:#d50000;}

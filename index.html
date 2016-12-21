@@ -22,8 +22,7 @@
     <script src="js/script.js"></script>
     <script src="js/formEntry.js"></script>
     <script src="js/d3.js"></script>
-
-    <script src="js/test.js"></script>
+    <script src="js/d3tip.js"></script>
 </head>
 
 <body onload="makeList('teams'); fileUpload(); modalControl()">
@@ -1016,10 +1015,24 @@
               </tbody>
             </table>
           </div>
-            <div id="" class = "fiveSixth left analysis">
+            <div id="analytics" class = "fiveSixth left analysis">
               <div class="chart left">
+                <h2>Summary</h2>
                 <svg class="svgChart" id="svg1"></svg>
               </div>
+              <div class="left">
+                <h2>Chart Key</h2>
+                  <div class=" legend">1 = Autonomous Beacon</div>
+                  <div class=" legend">2 = Autonomous Particles (Center)</div>
+                  <div class=" legend">3 = Autonomous Particles (Corner)</div>
+                  <div class=" legend">4 = Autonomous Cap Ball</div>
+                  <div class=" legend">5 = Autonomous Parking</div>
+                  <div class=" legend">6 = Teli-Op Beacons</div>
+                  <div class=" legend">7 = Teli-Op Particles (Center)</div>
+                  <div class=" legend">8 = Teli-Op Particles (Corner)</div>
+                  <div class=" legend">9 = Cap Ball (Lift)</div>
+              </div>
+              <div class="clear"></div>
               <table id="teamDataTable" class="full">
                 <thead>
                   <tr>
@@ -1071,8 +1084,6 @@
                 </tbody>
 
               </table>
-
-              </p>
             </div>
             <div class="clear footnote analysis">
               <br />

@@ -45,8 +45,8 @@ function checkRequiredFields() {
     var required = new Map();
     var ele = $('#scoreCards').children();
     required.set("Match Number", document.getElementById('matchNumber').value);
-    required.set("Blue Alliance Score", document.getElementById('blueScore').value);
     required.set("Red Alliance Score", document.getElementById('redScore').value);
+    required.set("Blue Alliance Score", document.getElementById('blueScore').value);
     for (var i = 0; i < ele.length; i++) {
         if (!ele[i].classList.contains('noShow')) {
             playerID = ele[i].id;
