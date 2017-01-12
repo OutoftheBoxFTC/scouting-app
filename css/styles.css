@@ -224,3 +224,15 @@ tbody ::selection { background: white; }
 	background-color: rgba(158, 158, 158, .9);
 	box-shadow: inset 1px 1px 1px rgba(158, 158, 158 .25);
 }
+
+/*Styles for buttons for the scoring element overview */
+
+.overview.active {background: #BDBDBD;
+	color: #212121;
+font-weight: normal;}
+
+.overview {text-transform: none;
+	cursor: pointer;}
+
+#scoringOverview{
+margin-top:20px;}
