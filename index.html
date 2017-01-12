@@ -132,7 +132,7 @@
         <div class="tabs nav">
             <div id="matchNav" class="tabs nav link active contentTabs" onclick="tabControl('contentTabs', 'matchNav', 'matchTab')">Matches</div>
             <div id="teamNav" class="tabs nav link  contentTabs" onclick="tabControl('contentTabs', 'teamNav', 'teamTab'); getData('teamListNav', scoresList)">Teams</div>
-            <div id="overviewNav" class="tabs nav link contentTabs" onclick="tabControl('contentTabs', 'overviewNav', 'overviewTab')">Overview</div>
+            <div id="overviewNav" class="tabs nav link contentTabs" onclick="tabControl('contentTabs', 'overviewNav', 'overviewTab'); getData('teamListNav', scoresList)">Overview</div>
         </div>
         <div id="matchTab" class="tabs content active contentTabs">
             <div id="scoreCards" class="right">
@@ -219,7 +219,7 @@
                           <img src="images/red/beacon.jpg" class="pic contain left" />
                           <div class="inner right">
                               <div class="header">
-                                  <div class="title">Teli-Op Beacon</div>
+                                  <div class="title">Tele-Op Beacon</div>
                                   <div class="subtitle"></div>
                               </div>
                               <div class="buttons">
@@ -239,7 +239,7 @@
                           <img src="images/red/particle.jpg" class="pic contain left" />
                           <div class="inner right">
                               <div class="header">
-                                  <div class="title">Teli-Op Particles</div>
+                                  <div class="title">Tele-Op Particles</div>
                                   <div class="subtitle half left c">Center </div>
                                   <div class="subtitle half left d">Corner </div>
                               </div>
@@ -403,7 +403,7 @@
                           <img src="images/red/beacon.jpg" class="pic contain left" />
                           <div class="inner right">
                               <div class="header">
-                                  <div class="title">Teli-Op Beacon</div>
+                                  <div class="title">Tele-Op Beacon</div>
                                   <div class="subtitle"></div>
                               </div>
                               <div class="buttons">
@@ -423,7 +423,7 @@
                           <img src="images/red/particle.jpg" class="pic contain left" />
                           <div class="inner right">
                               <div class="header">
-                                  <div class="title">Teli-Op Particles</div>
+                                  <div class="title">Tele-Op Particles</div>
                                   <div class="subtitle half left c">Center </div>
                                   <div class="subtitle half left d">Corner </div>
                               </div>
@@ -507,7 +507,7 @@
               <form id="blue_1" class="player dropshadow blueAlliance">
                   <div class="teamInfo material">
                       <div class="textfieldGroup  third">
-                          <input type="text" class="dark" name="b1_tnumber" id="b1_tnumber" requiblue/>
+                          <input type="text" class="dark" name="b1_tnumber" id="b1_tnumber" required/>
                           <label for="b1_tnumber">Team Number</label>
                           <span class="bar"></span>
                       </div>
@@ -587,7 +587,7 @@
                           <img src="images/blue/beacon.jpg" class="pic contain left" />
                           <div class="inner right">
                               <div class="header">
-                                  <div class="title">Teli-Op Beacon</div>
+                                  <div class="title">Tele-Op Beacon</div>
                                   <div class="subtitle"></div>
                               </div>
                               <div class="buttons">
@@ -607,7 +607,7 @@
                           <img src="images/blue/particle.jpg" class="pic contain left" />
                           <div class="inner right">
                               <div class="header">
-                                  <div class="title">Teli-Op Particles</div>
+                                  <div class="title">Tele-Op Particles</div>
                                   <div class="subtitle half left c">Center </div>
                                   <div class="subtitle half left d">Corner </div>
                               </div>
@@ -691,7 +691,7 @@
               <form id="blue_2" class="player dropshadow blueAlliance">
                   <div class="teamInfo material">
                       <div class="textfieldGroup  third">
-                          <input type="text" class="dark" name="b2_tnumber" id="b2_tnumber" requiblue/>
+                          <input type="text" class="dark" name="b2_tnumber" id="b2_tnumber" required/>
                           <label for="b2_tnumber">Team Number</label>
                           <span class="bar"></span>
                       </div>
@@ -771,7 +771,7 @@
                           <img src="images/blue/beacon.jpg" class="pic contain left" />
                           <div class="inner right">
                               <div class="header">
-                                  <div class="title">Teli-Op Beacon</div>
+                                  <div class="title">Tele-Op Beacon</div>
                                   <div class="subtitle"></div>
                               </div>
                               <div class="buttons">
@@ -791,7 +791,7 @@
                           <img src="images/blue/particle.jpg" class="pic contain left" />
                           <div class="inner right">
                               <div class="header">
-                                  <div class="title">Teli-Op Particles</div>
+                                  <div class="title">Tele-Op Particles</div>
                                   <div class="subtitle half left c">Center </div>
                                   <div class="subtitle half left d">Corner </div>
                               </div>
@@ -970,7 +970,7 @@
                                 Parking
                             </th>
                             <th>
-                                Teli-Op Beacons
+                                Tele-Op Beacons
                             </th>
                             <th>
                                 Particles Center
@@ -1017,7 +1017,7 @@
           </div>
             <div id="analytics" class = "fiveSixth left analysis">
               <div class="chart left">
-                <h2>Summary</h2>
+                <h2>Visual Overview of Team Matches</h2>
                 <svg class="svgChart" id="svg1"></svg>
               </div>
               <div class="left">
@@ -1027,9 +1027,9 @@
                   <div class=" legend">3 = Autonomous Particles (Corner)</div>
                   <div class=" legend">4 = Autonomous Cap Ball</div>
                   <div class=" legend">5 = Autonomous Parking</div>
-                  <div class=" legend">6 = Teli-Op Beacons</div>
-                  <div class=" legend">7 = Teli-Op Particles (Center)</div>
-                  <div class=" legend">8 = Teli-Op Particles (Corner)</div>
+                  <div class=" legend">6 = Tele-Op Beacons</div>
+                  <div class=" legend">7 = Tele-Op Particles (Center)</div>
+                  <div class=" legend">8 = Tele-Op Particles (Corner)</div>
                   <div class=" legend">9 = Cap Ball (Lift)</div>
               </div>
               <div class="clear"></div>
@@ -1061,7 +1061,7 @@
                           Parking
                       </th>
                       <th>
-                          Teli-Op Beacons
+                          Tele-Op Beacons
                       </th>
                       <th>
                           Particles Center
@@ -1095,10 +1095,64 @@
             </div>
             <div class ="clear"></div>
         </div>
+      </div>
         <div id="overviewTab" class="tabs content contentTabs">
-            <div class="tabs body">
-                content three
-            </div>
+          <div class="fiveSixth ">
+            <h1 id="">Scoring Element Overview</h1>
+            <table id="scoringOverview">
+              <thead>
+                <thead>
+                  <tr>
+                    <th data-element = "4" class=" overview " id="overview0">
+                      Autonomous Beacons
+                    </th>
+                    <th data-element = "5" class=" overview " id="overview1">
+                      Autonomous Particles (Center)
+                    </th>
+                    <th data-element = "6" class=" overview " id="overview2">
+                      Autonomous Particles (Corner)
+                    </th>
+                    <th data-element = "7" class=" overview " id="overview3">
+                      Autonomous Cap Ball
+                    </th>
+                    <th data-element = "8" class=" overview " id="overview4">
+                      Autonomous Parking
+                    </th>
+                    <th data-element = "9" class=" overview " id="overview5">
+                      Tele-Op Beacons
+                    </th>
+                    <th data-element = "10" class=" overview " id="overview6">
+                      Tele-Op Particles (Center)
+                    </th>
+                    <th data-element = "11" class=" overview " id="overview7">
+                      Tele-Op Particles (Corner)
+                    </th>
+                    <th data-element = "12" class=" overview " id="overview8">
+                      End Game Cap Ball (Lifting)
+                    </th>
+                  </tr>
+                </thead>
+              </thead>
+            </table>
+            <br />
+<h1 id="elementHeader"></h1>
+<table id="elementOverview" class="sixth left">
+  <thead>
+    <tr>
+      <th>
+        Team
+      </th>
+      <th>
+        Score
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+
+  </tbody>
+</table>
+<div class="clear"></div>
+          </div>
         </div>
     </div>
     <datalist id="teams">

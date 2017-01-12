@@ -11,7 +11,8 @@ function getTeamMatchScore(id) {
         }
           if (type == "text" || type == "number" || type == "textarea") {
             var value = document.getElementsByName(names[i])[0].value;
-            value = value.replace(/\,/g," ");
+            value = value.replace(/,/g," ");
+            value = value.replace(/(?:\r\n|\r|\n)/g," | ");
             array.push(value);
           }
     }
