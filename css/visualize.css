@@ -9,6 +9,8 @@
     height: 200px;
 }
 
+.chart.elementOverview{height:450px; width:80%}
+
 #analytics {
   margin: 20px auto;
     visibility: hidden;

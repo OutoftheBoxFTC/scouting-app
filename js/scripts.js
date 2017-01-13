@@ -27,30 +27,30 @@ tournamentName = "Test";
 /*==============================================================================
 *   Test Functions
 ==============================================================================*/
-function makeOverviewChart(data, svg) {
+function makeChart(data, svg) {
     $(svg).empty();
     var margin = {
-            top: 20,
+            top: 40,
             right: 20,
             bottom: 50,
-            left: 20
+            left: 80
         },
-        width = $('.chart').width() - margin.left - margin.right,
-        height = $('.chart').height() - margin.top - margin.bottom,
+        width = $('.chart.elementOverview').width() - margin.left - margin.right,
+        height = $('.chart.elementOverview').height() - margin.top - margin.bottom,
         barWidth = width / data.length;
 
     var x = d3.scaleBand()
         .rangeRound([0, width])
         .padding(0.1)
         .domain(data.map(function(d) {
-                        return d.key;
+                        return d.element;
                     })
         );
     var y = d3.scaleLinear()
         .range([height, 0])
         .domain([0, 10]);
 
-    var chart = d3.select(".svgChart")
+    var chart = d3.select(".svgChart" + svg)
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -60,7 +60,7 @@ function makeOverviewChart(data, svg) {
         .attr("class", "d3-tip")
         .offset([-8, 0])
         .html(function(d) {
-            return "" + d.key + ":" + " " + d.value;
+            return "" + d.score;
         });
     chart.call(tool_tip);
 
@@ -81,10 +81,10 @@ function makeOverviewChart(data, svg) {
         .transition()
         .duration(500) // Also NEW
         .attr("y", function(d) {
-            return y(d.value);
+            return y(d.score);
         })
         .attr("height", function(d) {
-            return height - y(d.value);
+            return height - y(d.score);
         });
 
     // Add the y Axis
@@ -101,10 +101,10 @@ function makeOverviewChart(data, svg) {
         .style("text-anchor", "end");
         //.style("display", "none");
 }
-
 //controls the scoring overview behavior
 $(document).ready(function() {
   $('.overview').click(function(){
+      console.log($('.chart').width())
     var divID = $(this).attr("id");
     var label = $(this).html();
     var element = $(this).attr("data-element");
@@ -134,12 +134,15 @@ function overviewData(element, tableID, headerID, label) {
     return b[1] - a[1];
 });
 for(i=0; i<sumArray.length; i++){
-  key.push(sumArray[i][0]);
-  value.push(sumArray[i][1]);
   addNewRow(sumArray[i], tableID);
 }
-var data = objectArray(key, value, "key","value");
-console.log(objectArray);
+for(i=0; i<8; i++){
+  key.push(sumArray[i][0]);
+  value.push(sumArray[i][1]);
+}
+var data = objectArray(key, value, 'element', 'score');
+makeChart(data,'#svg2')
+console.log(data);
 }
 
 
@@ -678,6 +681,7 @@ function pullMatchData(value, tableID) {
         console.log(scoreSum);
         var data = objectArray(elements, scoreSum, 'element', 'score');
         makeTeamChart(data, '#svg1');
+        console.log(data);
         var average = mapAverage(score[0][1].length - 1, score);
         qp = sumMapValue(score, 1, 1);
         average.splice(0, 2, "Average", qp);
