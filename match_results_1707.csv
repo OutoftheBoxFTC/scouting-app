@@ -1,0 +1,36 @@
+92,1,red,125,175,0,1,0,2,2,1,2,0,0,3,Scored beacon for wrong team!
+1604,1,red,125,175,0,2,0,0,0,1,2,0,0,4,got lost near beacon
+7129,1,blue,125,175,0,0,0,0,0,1,0,0,0,2,Disabled in auto  started then stalled. Static shock?
+6172,1,blue,125,175,0,0,0,0,0,1,2,0,0,3,No auto
+3110,2,red,20,175,0,0,2,2,1,1,2,0,0.25,4,Shot like 15 Particles!!!!!
+1280,2,red,20,175,0,0,1,0,1,0.5,1,0,0,2,Maybe 3 particles?
+6911,2,blue,20,175,0,0,2,0,2,0,0,0,0,1,Scored wrong beacon!
+8099,2,blue,20,175,0,0,0,0,0,0,0,0,0,1,Robot disabled whole game
+9662,3,red,75,75,0,0,2,2,1,0.5,0,0,0,2,Missed particles a lot
+4813,3,red,75,75,1,0,1,0,2,0,0,0,0,1,Disabled after auto
+5453,3,blue,75,75,0,0,0,0,0,1.5,1,0,0,2,Shot 3 particles
+4113,3,blue,75,75,0,0,0,0,0,1.5,1,0,2,4,Got two particles. Capped really fast.
+7129,4,red,74,56,0,0,0,0,0,0,0,0,0,1,Robot disabled whole match
+1280,4,red,74,56,0,0,0,2,2,1,0,2,0.25,2,Robot tried to shoot but missed in auto.
+92,4,blue,74,56,0,0,0,0,0,1,2,0,0,3,six particles
+6911,4,blue,74,56,0,0,0,0,0,1,0,2,0.25,2,14 in low goal. Should have let alliance partner have more balls.
+1604,5,red,159,154,1,1,0,0,1,0,0,1,0,3,4 in corner  intake broken?
+3110,5,red,159,154,1,2,0,0,2,0.5,0,2,0,3,15 in corner. Shooter broke in auto.
+4113,5,blue,159,154,1,0,2,2,0,1.5,0,1,2,3,2 balls in corner
+6172,5,blue,159,154,2,0,0,0,2,0,0,0,0,2,Good coordination. Was able to avoid hitting beacon already scored.
+4813,6,red,105,150,0,0,0,0,0,0,0,0,0,1,Robot disabled whole match
+5453,6,red,105,150,2,2,0,2,1,0.5,2,0,1,3,6 balls in high
+8099,6,blue,105,150,0,0,0,0,0,1.5,2,0,2,5,7 in high.
+9662,6,blue,105,150,0,0,0,0,0,0,0,0,0,1,Disabled whole match
+5453,7,red,40,170,0,0,0,0,0,0,0,0,0,1,Disabled whole match
+8099,7,red,40,170,0,0,0,0,0,1.5,2,0,2,5,12 balls in high!!!
+1604,7,blue,40,170,0,0,0,2,1,0,0,2,0,2,9 in low
+7129,7,blue,40,170,0,0,0,0,0,0.5,0,0,0.25,2,
+1280,8,red,155,125,0,0,0,0,0,0,0,1,1,3,5 low.
+6172,8,red,155,125,1,2,0,0,2,0.5,2,0,0,3,8 high
+3110,8,blue,155,125,0,0,0,0,0,1.5,2,0,2,4,11 high
+9662,8,blue,155,125,0,1,0,2,2,0,0,0,0,2,Disabled after auto
+4113,9,red,183,295,2,1,0,0,0,0,2,0,2,5,8 high
+92,9,red,183,295,0,2,0,2,2,0.5,0,1,0,3,5 low
+6911,9,blue,183,295,1,2,0,2,2,0,2,0,0,4,10 high
+4813,9,blue,183,295,0,0,0,0,0,1.5,0,2,1,3,8 low

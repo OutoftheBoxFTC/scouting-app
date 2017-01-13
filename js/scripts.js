@@ -13,27 +13,112 @@ var uploadedFile; // Used to store CSV information when uploading a file
 var requiredValuesPresent = false; //used to tell if all values are accounted for
 var cancel = false; //used to indicate whether the user wishes to cancel the action
 var scoreIDList = new Set(); // holds all of the unique score ids to prevent duplication
-var teamMatches = new Map();// map of matches divided by team
+var teamMatches = new Map(); // map of matches divided by team
 var tournamentName; //for importing matches, says when the last match data is from
 var debug = 0; //used for debugging
-var elements = ['Auto Beacon', 'Auto Particles (Center)', 'Auto Particles (Corner)', 'Auto Cap Ball', 'Auto Park', 'Teli-Op Beacons', 'Teli-Op Particles (Center)', 'Teli-Op Particles (Corner)', 'Cap Ball (Lift)'];//list of all the scoring elements this year
-var scores = [];//holds match score for one team when constructing the team score object
+var elements = ['Auto Beacon', 'Auto Particles (Center)', 'Auto Particles (Corner)', 'Auto Cap Ball', 'Auto Park', 'Teli-Op Beacons', 'Teli-Op Particles (Center)', 'Teli-Op Particles (Corner)', 'Cap Ball (Lift)']; //list of all the scoring elements this year
+var scores = []; //holds match score for one team when constructing the team score object
 /*==============================================================================
 *   Variables that need manual setting ahead of time
 ==============================================================================*/
 teamList = [33, 194, 354, 965, 1885, 2898, 4105, 4419, 4634, 4970, 5086, 5308, 5401, 5429, 5904, 6139, 6341, 6383, 6481, 6652, 7080, 7278, 7346, 7729, 7872, 7953, 7955, 7983, 8297, 8498, 8537, 8597, 8673, 8702, 8764, 9064, 9803, 9845, 9901, 10162, 10178, 10422, 10515, 10869, 11209, 11218, 11868, 12096];
-teamList = [92,1280,1604,3110,4113,4013,5453,6172,6911,7129,8099,9662];
-tournamentName = "Test";
+tournamentName = "Orange County";
 /*==============================================================================
 *   Test Functions
 ==============================================================================*/
+function teamRanking() {
+    var teams = uniqueTeamList(scoresList, 0);
+    var score;
+    var team;
+    var autoScore = [];
+    var teleScore = [];
+    var endScore = [];
+    var total = []
+    var a = [];
+    document.getElementById('autoBox').innerHTML = "";
+    document.getElementById('teleBox').innerHTML = "";
+    document.getElementById('endBox').innerHTML = "";
+    document.getElementById('total').innerHTML = "";
+    //Run through all the teams
+    for (i = 0; i < teams.length; i++) {
+        team = teamMatches.get(teams[i]);
+        score = [...team];
+        var aScore = 0;
+        var dScore = 0;
+        var eScore = sumMapValue(score, 1, 12);
+
+        //get auto score auto runs from 4-8
+        for (j = 4; j < 9; j++) {
+            var teamValue = sumMapValue(score, 1, j)
+            aScore += teamValue;
+        }
+
+        //driver control runs from 9 to 11
+        for (j = 9; j < 12; j++) {
+            var teamValue = sumMapValue(score, 1, j)
+            dScore += teamValue;
+        }
+        a.push(teams[i], aScore);
+        autoScore.push(a);
+        a = [];
+        a.push(teams[i], dScore);
+        teleScore.push(a);
+        a = [];
+        a.push(teams[i], eScore);
+        endScore.push(a);
+        a = [];
+        a.push(teams[i], aScore + dScore + eScore);
+        total.push(a);
+        a = [];
+    }
+    autoScore.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+    teleScore.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+    endScore.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+    total.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+
+    for (i = 0; i < 8; i++) {
+        var div = document.createElement('div');
+        div.className = "teamBox";
+        div.innerHTML = i + 1 + "." + " " + "<b> Team #" + autoScore[i][0] + "</b><em>(" + autoScore[i][1] + ")";
+        document.getElementById('autoBox').appendChild(div);
+
+        div = document.createElement('div');
+        div.className = "teamBox";
+        div.innerHTML = i + 1 + "." + " " + "<b> Team #" + teleScore[i][0] + "</b><em>(" + teleScore[i][1] + ")";
+        document.getElementById('teleBox').appendChild(div);
+
+        div = document.createElement('div');
+        div.className = "teamBox";
+        div.innerHTML = i + 1 + "." + " " + "<b> Team #" + endScore[i][0] + "</b><em>(" + endScore[i][1] + ")";
+        document.getElementById('endBox').appendChild(div);
+
+        div = document.createElement('div');
+        div.className = "teamBox";
+        div.innerHTML = i + 1 + "." + " " + "<b> Team #" + total[i][0] + "</b><em>(" + total[i][1] + ")";
+        document.getElementById('total').appendChild(div);
+    }
+
+    console.log(autoScore);
+    console.log(teleScore);
+    console.log(endScore);
+    console.log(total);
+}
+
 function makeChart(data, svg) {
     $(svg).empty();
     var margin = {
             top: 40,
             right: 20,
             bottom: 50,
-            left: 80
+            left: 40
         },
         width = $('.chart.elementOverview').width() - margin.left - margin.right,
         height = $('.chart.elementOverview').height() - margin.top - margin.bottom,
@@ -43,9 +128,8 @@ function makeChart(data, svg) {
         .rangeRound([0, width])
         .padding(0.1)
         .domain(data.map(function(d) {
-                        return d.element;
-                    })
-        );
+            return d.element;
+        }));
     var y = d3.scaleLinear()
         .range([height, 0])
         .domain([0, 10]);
@@ -99,50 +183,55 @@ function makeChart(data, svg) {
         .call(d3.axisBottom(x).tickSize(0))
         .selectAll("text")
         .style("text-anchor", "end");
-        //.style("display", "none");
+    //.style("display", "none");
 }
 //controls the scoring overview behavior
 $(document).ready(function() {
-  $('.overview').click(function(){
-      console.log($('.chart').width())
-    var divID = $(this).attr("id");
-    var label = $(this).html();
-    var element = $(this).attr("data-element");
-    groupToggleActive("overview", divID);
-    overviewData(element, 'elementOverview', 'elementHeader', label);
-  });
+    $('.overview').click(function() {
+      $('#elementOverview').css("visibility", "visible");
+        var divID = $(this).attr("id");
+        var label = $(this).html();
+        var element = $(this).attr("data-element");
+        groupToggleActive("overview", divID);
+        overviewData(element, 'elementOverview', 'elementHeader', label);
+    });
 });
 
+$(document).ready(function() {
+    $('#overviewNav').click(function() {
+      teamRanking();
+      });
+});
 function overviewData(element, tableID, headerID, label) {
-  clearTable(tableID);
-  document.getElementById(headerID).innerHTML = "Overview of "+ " " + label;
-  var sumArray = [];
+    clearTable(tableID);
+    document.getElementById(headerID).innerHTML = "Overview of " + " " + label;
+    var sumArray = [];
     var team;
     var score;
-    var key =[];
+    var key = [];
     var value = [];
     var teams = uniqueTeamList(scoresList, 0);
-    for (i=0; i < teams.length; i++) {
-      team = teamMatches.get(teams[i]);
-      score = [...team];
-      var teamValue = sumMapValue(score, 1, element);
-      var a = [];
-      a.push(teams[i], teamValue);
-      sumArray.push(a);
+    for (i = 0; i < teams.length; i++) {
+        team = teamMatches.get(teams[i]);
+        score = [...team];
+        var teamValue = sumMapValue(score, 1, element);
+        var a = [];
+        a.push(teams[i], teamValue);
+        sumArray.push(a);
     }
-    sumArray.sort(function (a,b) {
-    return b[1] - a[1];
-});
-for(i=0; i<sumArray.length; i++){
-  addNewRow(sumArray[i], tableID);
-}
-for(i=0; i<8; i++){
-  key.push(sumArray[i][0]);
-  value.push(sumArray[i][1]);
-}
-var data = objectArray(key, value, 'element', 'score');
-makeChart(data,'#svg2')
-console.log(data);
+    sumArray.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+    for (i = 0; i < sumArray.length; i++) {
+        addNewRow(sumArray[i], tableID);
+    }
+    for (i = 0; i < 8; i++) {
+        key.push(sumArray[i][0]);
+        value.push(sumArray[i][1]);
+    }
+    var data = objectArray(key, value, 'element', 'score');
+    makeChart(data, '#svg2')
+    console.log(data);
 }
 
 
@@ -189,12 +278,17 @@ function addNewRow(rowData, tableId) {
 
 //converts each array entry into a cell in a new row
 function arrayToTable(array, tableID) {
+    var rowCount = 0;
     var table = document.getElementById(tableID).getElementsByTagName('tbody')[0];
     for (w = 0; w < array.length; w++) {
         var row = table.insertRow(-1);
+        var cellCount = 0;
+        var name = "" + tableID + "_" + rowCount + "_" + cellCount;
         rowCount++;
         cell = row.insertCell(0);
+        cell.id = name;
         cell.innerHTML = array[w];
+        cellCount++;
     }
 }
 
@@ -498,7 +592,7 @@ function getData(tableID, scoreArray) {
     var teamList = uniqueTeamList(scoreArray, 0);
     teamMatches = mapTeamScores(teamList, scoreArray);
     arrayToTable(teamList, tableID);
-        //for (i=0;i<teamList.length; i++){
+    //for (i=0;i<teamList.length; i++){
     console.log(teamList);
     //addNewRow(teamList[i],tableID)
     //}
@@ -634,7 +728,7 @@ function makeTeamChart(data, svg) {
         .call(d3.axisBottom(x).tickSize(0))
         .selectAll("text")
         .style("text-anchor", "end");
-        //.style("display", "none");
+    //.style("display", "none");
 }
 
 

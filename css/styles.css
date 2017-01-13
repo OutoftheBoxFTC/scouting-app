@@ -236,3 +236,19 @@ font-weight: normal;}
 
 #scoringOverview{
 margin-top:20px;}
+
+
+.topTeams{
+margin: 20px auto 0px auto;
+padding: 15px;
+background: #eaeaea;
+border-right: 3px solid #fafafa}
+
+.topTeams.total{border:none;
+	margin: 3px auto 20px auto;}
+
+.teamBox{display:inline-flex;
+	padding:10px 20px;
+	text-align: center;
+	margin:3px 1px;
+	font-size: 14px;}
